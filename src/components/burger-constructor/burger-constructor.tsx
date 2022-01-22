@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import bun02 from '../../images/ingredients/bun-02.png';
-import sauce03 from '../../images/ingredients/sauce-03.png';
-import meat02 from '../../images/ingredients/meat-02.png';
-import sp01 from '../../images/ingredients/sp-1.png';
-import mineralrings from '../../images/ingredients/mineral-rings.png';
 import styles from './burger-constructor.module.css';
 import constructorItems from '../../utils/data-constructor.json';
 

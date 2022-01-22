@@ -17,7 +17,7 @@ function IngredientsTabs() {
 
 function IngredientItem(props) {
     return (
-        <li className={'mb-8 pl-4 pr-4 ' + styles.ingredientListItem} key={props._id}>
+        <li className={'mb-8 pl-4 pr-4 ' + styles.ingredientListItem}>
             <Counter count={1} size="default" />
             <img src={props.image} alt={props.name} className={'mb-1 ' + styles.ingredientImage} />
             <section className={'text text_type_digits-default mb-1 ' + styles.ingredientItemPrice}><span className='mr-2'>{props.price}</span> <CurrencyIcon type="primary" /></section>
@@ -33,7 +33,7 @@ function BurgerIngredientsList(props) {
             <h3 className={'text text_type_main-medium ' + styles.sectionName}>{props.heading}</h3>
             <ul className={'pt-6 pl-4 pr-2 pb-2 ' + styles.listOfIngredients}>
             {props.ingredients.map(ingredient => ingredient.type === props.type && (
-                <IngredientItem {...ingredient} />
+                <IngredientItem {...ingredient} key={ingredient._id} />
             ))}
             </ul>
         </>

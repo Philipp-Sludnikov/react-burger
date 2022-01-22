@@ -1,0 +1,67 @@
+[
+    {
+       "id": 1,
+	   "type": "top",
+	   "isLocked": true,
+	   "text": "Краторная булка N-200i (верх)",
+	   "price":  20,
+	   "thumbnail": "../ingredients/bun-02.png"
+    },
+	{
+       "id": 2,
+	   "isLocked": false,
+	   "text": "Соус традиционный галактический",
+	   "price":  30,
+	   "thumbnail": "../ingredients/sauce-03.png"
+    },
+	{
+       "id": 3,
+	   "isLocked": false,
+	   "text": "Мясо бессмертных моллюсков Protostomia",
+	   "price":  300,
+	   "thumbnail": "../ingredients/meat-02.png"
+    },
+	{
+       "id": 4,
+	   "isLocked": false,
+	   "text": "Мясо бессмертных моллюсков Protostomia",
+	   "price":  300,
+	   "thumbnail": "../ingredients/meat-02.png"
+    },
+	{
+       "id": 5,
+	   "isLocked": false,
+	   "text": "Плоды Фалленианского дерева",
+	   "price":  80,
+	   "thumbnail": "../ingredients/sp-1.png"
+    },
+	{
+       "id": 6,
+	   "isLocked": false,
+	   "text": "Плоды Фалленианского дерева",
+	   "price":  80,
+	   "thumbnail": "../ingredients/sp-1.png"
+    },
+	{
+       "id": 7,
+	   "isLocked": false,
+	   "text": "Хрустящие минеральные кольца",
+	   "price":  80,
+	   "thumbnail": "../ingredients/mineral-rings.png"
+    },
+	{
+       "id": 8,
+	   "isLocked": false,
+	   "text": "Хрустящие минеральные кольца",
+	   "price":  80,
+	   "thumbnail": "../ingredients/mineral-rings.png"
+    },
+    {
+       "id": 9,
+	   "type": "bottom",
+	   "isLocked": true,
+	   "text": "Краторная булка N-200i (низ)",
+	   "price":  20,
+	   "thumbnail": "../ingredients/bun-02.png"
+	}
+ ]

@@ -1,0 +1,41 @@
+.mainWrapper
+{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 40px;
+    height: 100%;
+}
+
+.wrapperPart
+{
+    width: calc(50% - 20px);
+}
+
+.mainTitle
+{
+    width: 100%;
+}
+
+@media screen and (max-width: 1240px) {
+    .mainWrapper {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapperPart {
+        width: 100%;
+        padding-left: 0!important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .mainWrapper h2 {
+        font-size: 22px;
+    }
+}

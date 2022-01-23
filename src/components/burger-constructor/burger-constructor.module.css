@@ -1,0 +1,107 @@
+.burgerConstructorWrapper
+{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.burgerConstructorWrapper
+{
+    width: 100%;
+}
+
+.unlockedWrapper
+{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 39vh;
+    overflow-y: scroll;
+}
+
+.unlockedWrapper::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #2F2F37;
+}
+
+.unlockedWrapper::-webkit-scrollbar-thumb
+{
+    background-color: #8585AD;
+}
+
+.constructorItem
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.constructorItem > div
+{
+    max-width: none;
+}
+
+.constructorTotal
+{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.totalPrice
+{
+
+}
+
+@media screen and (max-width: 1024px) 
+{
+    .unlockedWrapper {
+        max-height: none;
+        overflow: auto;
+    }
+}
+
+@media screen and (max-width: 500px) 
+{
+    .constructorItem > div {
+        background: none;
+        border-radius: 0;
+        border-bottom: 1px solid #2f2f37;
+        padding: 16px 4px;
+        font-size: 14px;
+    }
+
+    .burgerConstructorWrapper, .unlockedWrapper {
+        gap: 0;
+    }
+
+    .constructorItem img {
+        max-width: 52px;
+        height: auto;
+        margin-right: 8px;
+    }
+    
+    .constructor-element__price {
+        font-size: 22px;
+    }
+
+    .constructorTotal {
+        padding-right: 0;
+        justify-content: center;
+    }
+
+    .totalPrice {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .constructorTotal button {
+        margin-bottom: 10px;
+    }
+}

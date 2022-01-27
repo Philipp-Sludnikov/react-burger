@@ -24,6 +24,7 @@
     width: 50%;
     text-align: center;
     position: relative;
+    cursor: pointer;
 }
 
 .ingredientItemPrice

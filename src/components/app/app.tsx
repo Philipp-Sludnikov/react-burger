@@ -35,15 +35,27 @@ import OrderDetails from '../order-details/order-details';
       error: ''
     });
 
+  const checkResponse = (res) => {
+    
+      if (res.ok) {
+        return res.json();
+      }
+      setState({ ...state, error: `Ошибка ${res.status}`, hasError: true, isLoading: false });
+      return Promise.reject(`Ошибка ${res.status}`);
+
+  }
+
   const getProductData = async () => {
     setState({ ...state, hasError: false, isLoading: true });
     fetch(API)
-      .then(res => res.json())
+      .then(checkResponse)
       .then(data => setState({ ...state, data: data.data, isLoading: false}))
       .catch(e => {
         setState({ ...state, error: e.message, hasError: true, isLoading: false });
       });
   };
+  
+
 
   useEffect(() => { getProductData() }, []);
 

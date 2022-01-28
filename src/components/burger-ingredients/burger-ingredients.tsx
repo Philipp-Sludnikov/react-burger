@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
+import {IngredientPropTypes} from '../../utils/types';
 
 function IngredientsTabs() {
     const [current, setCurrent] = React.useState('bun')
@@ -53,27 +54,17 @@ const BurgerIngredients = ({ingredients, openModal}) => {
 }
 
 IngredientItem.propTypes = {
-    ingredient: PropTypes.shape({
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        openModal: PropTypes.func.isRequired
-    }).isRequired
+    ingredient: PropTypes.shape(IngredientPropTypes).isRequired,
+    openModal: PropTypes.func.isRequired
 }; 
 
 BurgerIngredients.propTypes = {
-    ingredients: PropTypes.array.isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientPropTypes)).isRequired,
     openModal: PropTypes.func.isRequired
 }; 
 
 BurgerIngredientsList.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        openModal: PropTypes.func.isRequired
-    })).isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientPropTypes)).isRequired,
     heading: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     openModal: PropTypes.func.isRequired

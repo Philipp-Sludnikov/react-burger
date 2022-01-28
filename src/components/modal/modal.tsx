@@ -8,27 +8,27 @@ import { useEffect, useRef } from 'react';
 const Modal = ({header, children, modalClose}) => {
     const modalRoot = document.getElementById('modal') as HTMLElement;
 
-    const ModalClick = (event) => {
+    const modalClick = (event) => {
       event.stopPropagation();
     }
 
-    const ModalKeyDown = (event) => {
-      if(event.keyCode == 27) {
+    const modalKeyDown = (event) => {
+      if(event.key == 'Escape') {
         modalClose();
       }
     }
 
     useEffect(()=> {
-      document.addEventListener('keydown', ModalKeyDown);
+      document.addEventListener('keydown', modalKeyDown);
       return () => {
-        document.removeEventListener('keydown', ModalKeyDown);
+        document.removeEventListener('keydown', modalKeyDown);
       }
     }, []);
 
     return createPortal(
         <>
           <ModalOverlay modalClose={modalClose}>
-            <div className={'p-10 ' + styles.modalWindow} onClick={ModalClick}>
+            <div className={'p-10 ' + styles.modalWindow} onClick={modalClick}>
                 <header className={styles.modalHeader}>
                     <span className="text text_type_main-large">{header}</span>
                     <CloseIcon type="primary" onClick={() => modalClose()}/>

@@ -1,40 +1,33 @@
 import styles from './ingredient-details.module.css';
-import PropTypes from 'prop-types';
+import {IngredientPropTypes} from '../../utils/types';
 
 const IngredientDetails = (props) => {
     return(
         <section className='mb-5'>
           <img src={props.image_large} alt={props.name} className='mb-4' />
-          <section className="text text_type_main-medium mb-8">{props.name} </section>
+          <p className="text text_type_main-medium mb-8">{props.name} </p>
           <section className={styles.composition}>
-            <section>
-              <section className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Калории,ккал</section>
-              <section className='text text_type_digits-default text_color_inactive'>{props.calories}</section>
-            </section>
-            <section>
-              <section className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Белки, г</section>
-              <section className='text text_type_digits-default text_color_inactive'>{props.proteins}</section>
-            </section>
-            <section>
-              <section className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Жиры, г</section>
-              <section className={'text text_type_digits-default text_color_inactive ' + styles.compositionItemValue}>{props.fat}</section>
-            </section>
-            <section>
-              <section className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Углеводы, г</section>
-              <section className='text text_type_digits-default text_color_inactive'>{props.carbohydrates}</section>
-            </section>
+            <span>
+              <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Калории,ккал</p>
+              <p className='text text_type_digits-default text_color_inactive'>{props.calories}</p>
+            </span>
+            <span>
+              <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Белки, г</p>
+              <p className='text text_type_digits-default text_color_inactive'>{props.proteins}</p>
+            </span>
+            <span>
+              <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Жиры, г</p>
+              <p className={'text text_type_digits-default text_color_inactive ' + styles.compositionItemValue}>{props.fat}</p>
+            </span>
+            <span>
+              <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Углеводы, г</p>
+              <p className='text text_type_digits-default text_color_inactive'>{props.carbohydrates}</p>
+            </span>
           </section>
         </section>
       );
 }
 
-IngredientDetails.propTypes = {
-  image_large: PropTypes.string,
-  name: PropTypes.string,
-  calories: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number
-};
+IngredientDetails.propTypes = IngredientPropTypes;
 
 export default IngredientDetails;

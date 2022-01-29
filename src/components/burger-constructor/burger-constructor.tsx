@@ -24,25 +24,26 @@ const ConstructorItem = (props) => {
 const ConstructorItemElement = (props) => {
     return(
         <ConstructorItem locked={props.constructorItem.isLocked}>
-        <ConstructorElement
-            type={typeof props.constructorItem.type === "undefined" ? undefined : props.constructorItem.type}
-            isLocked={props.constructorItem.isLocked}
-            text={props.constructorItem.text}
-            price={props.constructorItem.price}
-            thumbnail={props.constructorItem.thumbnail}
-        />
+            <ConstructorElement
+                type={typeof props.constructorItem.type === "undefined" ? undefined : props.constructorItem.type}
+                isLocked={props.constructorItem.isLocked}
+                text={props.constructorItem.text}
+                price={props.constructorItem.price}
+                thumbnail={props.constructorItem.thumbnail}
+            />
         </ConstructorItem>
     );
 }
 
-const BurgerConstructor = () => { 
+const BurgerConstructor = ({openModal}) => { 
     let undefined;
     return(<>
         <section className={'mb-10 ' +styles.burgerConstructorWrapper}>
         <ConstructorItemElement constructorItem={constructorItems[0]} />
             <section className={styles.unlockedWrapper}>
                 {constructorItems.map((constructorItem, index) => 
-                    <ConstructorItemElement constructorItem={constructorItem} key={constructorItem.id} />
+                    (index !== 0 && index !== constructorItems.length-1) &&
+                        <ConstructorItemElement constructorItem={constructorItem} key={constructorItem.id} />
                 )}
             </section>
         <ConstructorItemElement constructorItem={constructorItems[constructorItems.length-1]} />
@@ -50,7 +51,7 @@ const BurgerConstructor = () => {
 
         <section className={'pr-4 ' + styles.constructorTotal}>
             <ConstructorTotalPrice />
-            <Button type="primary" size="large">Оформить заказ</Button>
+            <Button type="primary" size="large" onClick={() => openModal()}>Оформить заказ</Button>
         </section>
         </>
     );
@@ -58,12 +59,22 @@ const BurgerConstructor = () => {
 
 
 ConstructorItem.propTypes = {
-    locked: PropTypes.bool,
-    children: PropTypes.element
+    locked: PropTypes.bool.isRequired,
+    children: PropTypes.element.isRequired
 }; 
 
 ConstructorItemElement.propTypes = {
-    constructorItem:PropTypes.object
+    constructorItem: PropTypes.shape({
+        isLocked: PropTypes.bool.isRequired,
+        type: PropTypes.string,
+        text: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        thumbnail: PropTypes.string.isRequired
+    }),
+}
+
+BurgerConstructor.propTypes = {
+    openModal: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor;

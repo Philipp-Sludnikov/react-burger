@@ -40,7 +40,6 @@ import OrderDetails from '../order-details/order-details';
       if (res.ok) {
         return res.json();
       }
-      setState({ ...state, error: `Ошибка ${res.status}`, hasError: true, isLoading: false });
       return Promise.reject(`Ошибка ${res.status}`);
 
   }

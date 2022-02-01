@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import constructorItems from '../../utils/data-constructor.json';
+import { ConstructorContext } from '../../services/constructorContext';
 
-
-const ConstructorTotalPrice = () => {
+const ConstructorTotalPrice = ({totalPrice}) => {
     return(
             <section className={'mr-10 ' + styles.totalPrice}>
-                <span className='text text_type_digits-medium'>610</span> <CurrencyIcon type="primary" />
+                <span className='text text_type_digits-medium'>{totalPrice}</span> <CurrencyIcon type="primary" />
             </section>
     );
 }
@@ -22,59 +21,76 @@ const ConstructorItem = (props) => {
 }
 
 const ConstructorItemElement = (props) => {
+    let bunText = '';
+    if(props.type === 'top') {
+        bunText = '(верх)';
+    } else if(props.type === 'bottom') {
+        bunText = '(низ)';
+    }
+
     return(
-        <ConstructorItem locked={props.constructorItem.isLocked}>
+        <ConstructorItem locked={props.isLocked}>
             <ConstructorElement
-                type={typeof props.constructorItem.type === "undefined" ? undefined : props.constructorItem.type}
-                isLocked={props.constructorItem.isLocked}
-                text={props.constructorItem.text}
+                type={props.type}
+                isLocked={props.isLocked}
+                text={`${props.constructorItem.name} ${bunText}`}
                 price={props.constructorItem.price}
-                thumbnail={props.constructorItem.thumbnail}
+                thumbnail={props.constructorItem.image}
             />
         </ConstructorItem>
     );
 }
 
-const BurgerConstructor = ({openModal}) => { 
-    let undefined;
+const BurgerConstructor = ({openModal, totalPrice}) => { 
+    const constructorItems = useContext(ConstructorContext);
+    const bunCount = constructorItems.filter(element => element.type === 'bun').length;
+    const bunIndex = constructorItems.findIndex(element => element.type === 'bun');
+
     return(<>
+        {bunCount < 2 ? (<>
         <section className={'mb-10 ' +styles.burgerConstructorWrapper}>
-        <ConstructorItemElement constructorItem={constructorItems[0]} />
-            <section className={styles.unlockedWrapper}>
-                {constructorItems.map((constructorItem, index) => 
-                    (index !== 0 && index !== constructorItems.length-1) &&
-                        <ConstructorItemElement constructorItem={constructorItem} key={constructorItem.id} />
-                )}
-            </section>
-        <ConstructorItemElement constructorItem={constructorItems[constructorItems.length-1]} />
+            {bunCount !== 0 && <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="top" /> }
+                <section className={styles.unlockedWrapper}>
+                    {constructorItems.map((constructorItem, index) => 
+                        (index !== bunIndex) &&
+                            <ConstructorItemElement constructorItem={constructorItem} key={constructorItem._id} />
+                    )}
+                </section>
+            {bunCount !== 0 && <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="bottom" /> }
         </section>
 
         <section className={'pr-4 ' + styles.constructorTotal}>
-            <ConstructorTotalPrice />
+            <ConstructorTotalPrice totalPrice={totalPrice}/>
             <Button type="primary" size="large" onClick={() => openModal()}>Оформить заказ</Button>
-        </section>
+        </section> </>) : 'Ошибка! В заказе может быть только две булки одного типа (сверху и снизу)'}
         </>
     );
 }
 
 
 ConstructorItem.propTypes = {
-    locked: PropTypes.bool.isRequired,
+    locked: PropTypes.bool,
     children: PropTypes.element.isRequired
 }; 
 
 ConstructorItemElement.propTypes = {
     constructorItem: PropTypes.shape({
-        isLocked: PropTypes.bool.isRequired,
         type: PropTypes.string,
-        text: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        thumbnail: PropTypes.string.isRequired
+        image: PropTypes.string.isRequired
     }),
+    isLocked: PropTypes.bool,
+    type: PropTypes.string
 }
 
 BurgerConstructor.propTypes = {
-    openModal: PropTypes.func.isRequired
+    openModal: PropTypes.func.isRequired,
+    totalPrice: PropTypes.number.isRequired
 }
+
+ConstructorTotalPrice.propTypes = {
+    totalPrice: PropTypes.number.isRequired
+}; 
 
 export default BurgerConstructor;

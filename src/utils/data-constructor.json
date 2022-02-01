@@ -1,67 +1,58 @@
 [
-    {
-       "id": 1,
-	   "type": "top",
-	   "isLocked": true,
-	   "text": "Краторная булка N-200i (верх)",
-	   "price":  20,
-	   "thumbnail": "../ingredients/bun-02.png"
-    },
 	{
-       "id": 2,
-	   "isLocked": false,
-	   "text": "Соус традиционный галактический",
-	   "price":  30,
-	   "thumbnail": "../ingredients/sauce-03.png"
-    },
+		"_id": "60d3b41abdacab0026a733c6",
+		"name": "Краторная булка N-200i",
+		"type": "bun",
+		"price": 1255,
+		"image": "https://code.s3.yandex.net/react/code/bun-02.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png"
+	},
 	{
-       "id": 3,
-	   "isLocked": false,
-	   "text": "Мясо бессмертных моллюсков Protostomia",
-	   "price":  300,
-	   "thumbnail": "../ingredients/meat-02.png"
-    },
+		"_id": "60d3b41abdacab0026a733c8",
+		"name": "Филе Люминесцентного тетраодонтимформа",
+		"type": "main",
+		"price": 988,
+		"image": "https://code.s3.yandex.net/react/code/meat-03.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/meat-03-mobile.png"
+	},
 	{
-       "id": 4,
-	   "isLocked": false,
-	   "text": "Мясо бессмертных моллюсков Protostomia",
-	   "price":  300,
-	   "thumbnail": "../ingredients/meat-02.png"
-    },
+		"_id": "60d3b41abdacab0026a733ca",
+		"name": "Говяжий метеорит (отбивная)",
+		"type": "main",
+		"price": 3000,
+		"image": "https://code.s3.yandex.net/react/code/meat-04.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+	},
 	{
-       "id": 5,
-	   "isLocked": false,
-	   "text": "Плоды Фалленианского дерева",
-	   "price":  80,
-	   "thumbnail": "../ingredients/sp-1.png"
-    },
+		"_id": "60d3b41abdacab0026a733cb",
+		"name": "Биокотлета из марсианской Магнолии",
+		"type": "main",
+		"price": 424,
+		"image": "https://code.s3.yandex.net/react/code/meat-01.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png"
+	},
 	{
-       "id": 6,
-	   "isLocked": false,
-	   "text": "Плоды Фалленианского дерева",
-	   "price":  80,
-	   "thumbnail": "../ingredients/sp-1.png"
-    },
+		"_id": "60d3b41abdacab0026a733ce",
+		"name": "Соус традиционный галактический",
+		"type": "sauce",
+		"price": 15,
+		"image": "https://code.s3.yandex.net/react/code/sauce-03.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/sauce-03-mobile.png"
+	},
 	{
-       "id": 7,
-	   "isLocked": false,
-	   "text": "Хрустящие минеральные кольца",
-	   "price":  80,
-	   "thumbnail": "../ingredients/mineral-rings.png"
-    },
+		"_id": "60d3b41abdacab0026a733cf",
+		"name": "Соус с шипами Антарианского плоскоходца",
+		"type": "sauce",
+		"price": 88,
+		"image": "https://code.s3.yandex.net/react/code/sauce-01.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/sauce-01-mobile.png"
+	},
 	{
-       "id": 8,
-	   "isLocked": false,
-	   "text": "Хрустящие минеральные кольца",
-	   "price":  80,
-	   "thumbnail": "../ingredients/mineral-rings.png"
-    },
-    {
-       "id": 9,
-	   "type": "bottom",
-	   "isLocked": true,
-	   "text": "Краторная булка N-200i (низ)",
-	   "price":  20,
-	   "thumbnail": "../ingredients/bun-02.png"
+		"_id": "60d3b41abdacab0026a733d0",
+		"name": "Хрустящие минеральные кольца",
+		"type": "main",
+		"price": 300,
+		"image": "https://code.s3.yandex.net/react/code/mineral_rings.png",
+		"image_mobile": "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png"
 	}
- ]
+]

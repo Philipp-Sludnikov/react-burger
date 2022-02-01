@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import styles from './app.module.css';
 import AppHeader from '..//app-header/app-header';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import loadingGear from '../../images/Gear.gif';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
+import constructorItems from '../../utils/data-constructor.json';
+import { ConstructorContext } from '../../services/constructorContext';
 
-  const API = 'https://norma.nomoreparties.space/api/ingredients/';
+  const ingredientAPI = 'https://norma.nomoreparties.space/api/ingredients/';
+  const orderAPI = 'https://norma.nomoreparties.space/api/orders';
 
   const Loader = () => {
     return (
@@ -44,23 +47,38 @@ import OrderDetails from '../order-details/order-details';
 
   }
 
+  const initialTotalPrice = 0;
+  
+  const setTotalPrice = () => {
+    let sum = constructorItems.reduce(function (sum, currentValue) {
+      return sum + (currentValue.price * (currentValue.type === 'bun' ? 2 : 1));
+      }, 0);
+    return sum;
+  }
+
+  const [totalPrice, calcTotalPrice] = useReducer(setTotalPrice, initialTotalPrice, undefined);
+
   const getProductData = async () => {
     setState({ ...state, hasError: false, isLoading: true });
-    fetch(API)
+    fetch(ingredientAPI)
       .then(checkResponse)
       .then(data => setState({ ...state, data: data.data, isLoading: false}))
       .catch(e => {
         setState({ ...state, error: e.message, hasError: true, isLoading: false });
       });
   };
-  
-
 
   useEffect(() => { getProductData() }, []);
+  useEffect(() => { calcTotalPrice() }, [constructorItems]);
 
   const [selectedIngredient, setSelectedIngredient] = useState({});
   const [visibleIngredientModal, setVisibleIngredientModal] = useState(false);
 
+  const [orderInfo, setOrderInfo] = useState({
+    error: false,
+    textError: '',
+    orderBody: {}
+  });
   const [visibleOrderModal, setVisibleOrderModal] = useState(false);
 
   const openModalIngredient = (ingredient) => {
@@ -73,12 +91,45 @@ import OrderDetails from '../order-details/order-details';
   }
 
   const openModalOrderDetails = () => {
+    getOrderData();
     setVisibleOrderModal(true);
   }
 
   const closeModalOrderDetails = () => {
     setVisibleOrderModal(false);
   }
+
+  const getOrderData = async () => {
+    let bunID = '';
+    const ingredientsIDs = constructorItems.map(function(el) {
+      if(el.type !== 'bun') {
+        return el._id;
+      } else {
+        bunID = el._id;
+        return el._id;
+      }
+    });
+
+    if(bunID !== '') {
+      ingredientsIDs.push(bunID);
+    }
+
+    const ingredientsReq = {
+      'ingredients': ingredientsIDs
+    }
+    fetch(orderAPI, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(ingredientsReq)
+    })
+      .then(checkResponse)
+      .then(data => setOrderInfo({...orderInfo, error: false, orderBody: data.order}))
+      .catch(e => {
+        setOrderInfo({error: true, textError: e.message, orderBody: {} });
+      });
+  };
 
   return (
     <div>
@@ -92,10 +143,10 @@ import OrderDetails from '../order-details/order-details';
         </Modal> 
         }
 
-        {visibleOrderModal &&
-        <Modal modalClose={closeModalOrderDetails}>
-          <OrderDetails />
-        </Modal> 
+        {visibleOrderModal  &&
+          <Modal modalClose={closeModalOrderDetails} >
+            <OrderDetails {...orderInfo.orderBody} error={orderInfo.error}/>
+          </Modal> 
         }
         <AppHeader />
         <main className={styles.mainWrapper}>
@@ -104,7 +155,9 @@ import OrderDetails from '../order-details/order-details';
             <BurgerIngredients ingredients={state.data} openModal={openModalIngredient}/>
           </section>
           <section className={'pl-4 ' + styles.wrapperPart}>
-            <BurgerConstructor openModal={openModalOrderDetails} />
+            <ConstructorContext.Provider value={constructorItems}>
+              <BurgerConstructor openModal={openModalOrderDetails} totalPrice={totalPrice}/>
+            </ConstructorContext.Provider>
           </section>
         </main>
       </>

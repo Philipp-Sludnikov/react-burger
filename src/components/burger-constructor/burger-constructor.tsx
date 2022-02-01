@@ -53,7 +53,7 @@ const BurgerConstructor = ({openModal, totalPrice}) => {
                 <section className={styles.unlockedWrapper}>
                     {constructorItems.map((constructorItem, index) => 
                         (index !== bunIndex) &&
-                            <ConstructorItemElement constructorItem={constructorItem} key={constructorItem._id} />
+                            <ConstructorItemElement constructorItem={constructorItem} key={index} />
                     )}
                 </section>
             {bunCount !== 0 && <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="bottom" /> }

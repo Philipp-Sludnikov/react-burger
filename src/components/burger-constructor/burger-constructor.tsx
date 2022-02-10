@@ -6,7 +6,6 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { getOrderData } from '../../services/actions/index';
 import { useDrag, useDrop } from "react-dnd";
 import {IngredientPropTypes} from '../../utils/types';
-import { flattenDiagnosticMessageText } from 'typescript';
 
 const ConstructorTotalPrice = ({totalPrice}) => {
     return(

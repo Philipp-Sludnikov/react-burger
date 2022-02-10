@@ -8,11 +8,9 @@ import loadingGear from '../../images/Gear.gif';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
-import constructorItems from '../../utils/data-constructor.json';
-import { ConstructorContext } from '../../services/constructorContext';
-
-  const ingredientAPI = 'https://norma.nomoreparties.space/api/ingredients/';
-  const orderAPI = 'https://norma.nomoreparties.space/api/orders';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
   const Loader = () => {
     return (
@@ -31,134 +29,53 @@ import { ConstructorContext } from '../../services/constructorContext';
   }
 
   const App = () => {
-    const [state, setState] = useState({
-      isLoading: false,
-      hasError: false,
-      data: [],
-      error: ''
-    });
 
-  const checkResponse = (res) => {
-    
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
+  const { ingredientsRequest, ingredientsFailed, ingredientsError } = useSelector((store: RootStateOrAny) => store.ingredients);
+  const { visibleModalIngredient, currentViewedIngredient } = useSelector((store: RootStateOrAny) => store.modalIngredient);
+  const { visibleModalOrder, orderInfo, orderInfoError, orderInfoFailed } = useSelector((store: RootStateOrAny) => store.modalOrder);
 
-  }
 
-  const initialTotalPrice = 0;
-  
-  const setTotalPrice = () => {
-    let sum = constructorItems.reduce(function (sum, currentValue) {
-      return sum + (currentValue.price * (currentValue.type === 'bun' ? 2 : 1));
-      }, 0);
-    return sum;
-  }
-
-  const [totalPrice, calcTotalPrice] = useReducer(setTotalPrice, initialTotalPrice, undefined);
-
-  const getProductData = async () => {
-    setState({ ...state, hasError: false, isLoading: true });
-    fetch(ingredientAPI)
-      .then(checkResponse)
-      .then(data => setState({ ...state, data: data.data, isLoading: false}))
-      .catch(e => {
-        setState({ ...state, error: e.message, hasError: true, isLoading: false });
-      });
-  };
-
-  useEffect(() => { getProductData() }, []);
-  useEffect(() => { calcTotalPrice() }, [constructorItems]);
-
-  const [selectedIngredient, setSelectedIngredient] = useState({});
-  const [visibleIngredientModal, setVisibleIngredientModal] = useState(false);
-
-  const [orderInfo, setOrderInfo] = useState({
-    error: false,
-    textError: '',
-    orderBody: {}
-  });
-  const [visibleOrderModal, setVisibleOrderModal] = useState(false);
-
-  const openModalIngredient = (ingredient) => {
-    setSelectedIngredient({...ingredient});
-    setVisibleIngredientModal(true);
-  }
+  const dispatch = useDispatch();
 
   const closeModalIngredient = () => {
-    setVisibleIngredientModal(false);
-  }
-
-  const openModalOrderDetails = () => {
-    getOrderData();
-    setVisibleOrderModal(true);
+    dispatch({
+      type: 'CLOSE_MODAL_INGREDIENT'
+    });
   }
 
   const closeModalOrderDetails = () => {
-    setVisibleOrderModal(false);
-  }
-
-  const getOrderData = async () => {
-    let bunID = '';
-    const ingredientsIDs = constructorItems.map(function(el) {
-      if(el.type !== 'bun') {
-        return el._id;
-      } else {
-        bunID = el._id;
-        return el._id;
-      }
+    dispatch({
+      type: 'CLOSE_MODAL_ORDER'
     });
-
-    if(bunID !== '') {
-      ingredientsIDs.push(bunID);
-    }
-
-    const ingredientsReq = {
-      'ingredients': ingredientsIDs
-    }
-    fetch(orderAPI, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(ingredientsReq)
-    })
-      .then(checkResponse)
-      .then(data => setOrderInfo({...orderInfo, error: false, orderBody: data.order}))
-      .catch(e => {
-        setOrderInfo({error: true, textError: e.message, orderBody: {} });
-      });
-  };
+  }
 
   return (
     <div>
-      {state.isLoading && <Loader />}
-      {state.hasError && <Error error={state.error}>При загрузке данных произошла ошибка, попробуйте перезайти в приложение</Error>}
-      {!state.isLoading && !state.hasError &&
+      {ingredientsRequest && <Loader />}
+      {ingredientsFailed ? <Error error={ingredientsError}>При загрузке данных произошла ошибка, попробуйте перезайти в приложение</Error> :
       <>
-        {visibleIngredientModal &&
+        {visibleModalIngredient &&
         <Modal header="Детали ингредиента" modalClose={closeModalIngredient}>
-          <IngredientDetails {...selectedIngredient} />
+          <IngredientDetails {...currentViewedIngredient} />
         </Modal> 
         }
 
-        {visibleOrderModal  &&
+        {visibleModalOrder  &&
           <Modal modalClose={closeModalOrderDetails} >
-            <OrderDetails {...orderInfo.orderBody} error={orderInfo.error}/>
+            <OrderDetails {...orderInfo} error={orderInfoFailed}/>
           </Modal> 
         }
         <AppHeader />
         <main className={styles.mainWrapper}>
           <h2 className={"text text_type_main-large mb-5 " + styles.mainTitle}>Соберите бургер</h2>
-          <section className={styles.wrapperPart}>
-            <BurgerIngredients ingredients={state.data} openModal={openModalIngredient}/>
-          </section>
-          <section className={'pl-4 ' + styles.wrapperPart}>
-            <ConstructorContext.Provider value={constructorItems}>
-              <BurgerConstructor openModal={openModalOrderDetails} totalPrice={totalPrice}/>
-            </ConstructorContext.Provider>
-          </section>
+          <DndProvider backend={HTML5Backend}>
+            <section className={styles.wrapperPart}>
+              <BurgerIngredients />
+            </section>
+            <section className={'pl-4 ' + styles.wrapperPart}>
+                <BurgerConstructor />
+            </section>
+          </DndProvider>
         </main>
       </>
     }

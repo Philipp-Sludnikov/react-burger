@@ -37,6 +37,7 @@
     justify-content: flex-start;
     gap: 8px;
     width: 100%;
+    transition: 0.2s;
 }
 
 .constructorItem > div
@@ -52,9 +53,24 @@
     align-items: center;
 }
 
-.totalPrice
+.emptyBurgerConstructorWrapper
 {
+    height: 190px;
+}
 
+.constructorItemHidden
+{
+    opacity: 0;
+}
+
+.constructorItemDragged
+{
+    cursor: move;
+}
+
+.constructorItemNotCanDrag
+{
+    cursor: not-allowed;
 }
 
 @media screen and (max-width: 1024px) 

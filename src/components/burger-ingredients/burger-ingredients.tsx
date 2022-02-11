@@ -4,7 +4,7 @@ import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-u
 import styles from './burger-ingredients.module.css';
 import {IngredientPropTypes} from '../../utils/types';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from '../../services/actions/index';
+import { getIngredients, showModalIngredient } from '../../services/actions/index';
 import { useDrag } from "react-dnd";
 
 const IngredientsTabs = ({ currentTab }) => {
@@ -36,19 +36,26 @@ const IngredientItem = ({ingredient}) => {
     });
 
     const canDragIngredient = (item) => {
-        const bunIndex = constructorItems.findIndex(element => element.type === 'bun' && element._id === item._id);
-        if(bunIndex === -1) {
-            return true;
+        const itemsCount = constructorItems.length;
+        if(itemsCount === 0) {
+            if(item.type === 'bun') {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            const bunIndex = constructorItems.findIndex(element => element.type === 'bun' && element._id === item._id);
+            if(bunIndex === -1) {
+                return true;
+            } else {
+                return false;
+            }
         }
+ 
     }
 
     const openModal = (ingredient) => {
-        dispatch({
-            type: 'SHOW_MODAL_INGREDIENT',
-            ingredient: ingredient
-        })
+        dispatch(showModalIngredient(ingredient));
     }
 
     return (

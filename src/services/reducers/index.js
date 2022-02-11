@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { 
     GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS, 
-    REMOVE_CONSTRUCTOR_ITEM, CALC_CONSTRUCTOR_TOTAL_PRICE, ADD_CONSTRUCTOR_INGREDIENT, ADD_BUN_CONSTRUCTOR_INGREDIENT, MOVE_CONSTRUCTOR_INGREDIENT,
+    REMOVE_CONSTRUCTOR_ITEM, CALC_CONSTRUCTOR_TOTAL_PRICE, ADD_CONSTRUCTOR_INGREDIENT, ADD_BUN_CONSTRUCTOR_INGREDIENT, MOVE_CONSTRUCTOR_INGREDIENT, RESET_CONSTRUCTOR,
     SHOW_MODAL_INGREDIENT, CLOSE_MODAL_INGREDIENT,
     SHOW_MODAL_ORDER, CLOSE_MODAL_ORDER, GET_ORDER_INFO, GET_ORDER_INFO_FAILED, GET_ORDER_INFO_SUCCESS
 } from '../actions/index';
@@ -104,6 +104,12 @@ const constructorIngredientsList = (state = constructorIngredientsState, action)
             return {
                 ...state,
                 constructorIngredients: currentIngredientsMoved
+            }
+        }
+        case RESET_CONSTRUCTOR: {
+            return {
+                ...state,
+                constructorIngredients: []
             }
         }
         default: 

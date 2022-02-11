@@ -1,11 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import { getOrderData } from '../../services/actions/index';
+import { getOrderData, calcTotalPrice, addConstructorIngredient, moveConstructorIngredient, removeConstructorIngredient } from '../../services/actions/index';
 import { useDrag, useDrop } from "react-dnd";
 import {IngredientPropTypes} from '../../utils/types';
+
+const EmptyConstructorElement = ({children, type}) => {
+    return (
+        <section className={`${styles.emptyConstructorWrap} ${type !== 'bun' && styles.emptyConstructorWrapMin}`}>
+            {children}
+        </section>
+    );
+}
+
+const EmptyConstructor = ({dropRef, isHover}) => {
+    return (
+        <section className={styles.emptyConstructorContainer} ref={dropRef}>
+            <section className={`${styles.emptyConstructorTop} ${isHover && styles.emptyConstructorHovered}`}></section>
+            <EmptyConstructorElement type="bun">
+                <p className="text text_type_main-default text_color_inactive">Выберите булку</p>
+            </EmptyConstructorElement>
+            <section className={`${styles.emptyConstructorBottom} ${isHover && styles.emptyConstructorHovered}`}></section>
+        </section>
+    );
+}
 
 const ConstructorTotalPrice = ({totalPrice}) => {
     return(
@@ -54,7 +74,7 @@ const ConstructorItem = (props) => {
             }
 
             
-            dispatch({type: 'MOVE_CONSTRUCTOR_INGREDIENT', dragIndex: dragIndex, hoverIndex: hoverIndex});
+            dispatch(moveConstructorIngredient(dragIndex, hoverIndex));
 
             item['index'] = hoverIndex;
         }
@@ -99,7 +119,7 @@ const ConstructorItemElement = (props) => {
     const dispatch = useDispatch();
 
     const removeConstructorElement = (id) => {
-        dispatch({type: 'REMOVE_CONSTRUCTOR_ITEM', id: id});
+        dispatch(removeConstructorIngredient(id));
     }
 
     return(
@@ -118,7 +138,7 @@ const ConstructorItemElement = (props) => {
 
 const BurgerConstructor = () => { 
     const dispatch = useDispatch();
-
+    const [draggedItem, setDraggedItem] = useState('');
 
     const orderAPI = 'https://norma.nomoreparties.space/api/orders';
 
@@ -128,29 +148,22 @@ const BurgerConstructor = () => {
     const [{isHover}, dropTarget] = useDrop({
         accept: "ingredient",
         drop: (item) => onDropHandler(item),
+        hover: (item) => setTypeDraggedItem(item),
         collect: monitor => ({
             isHover: monitor.isOver()
         })
     });
 
     const onDropHandler = (item) => {
-        if(item.type === 'bun') {
-            dispatch({
-                type: 'ADD_BUN_CONSTRUCTOR_INGREDIENT',
-                bun: item
-            })
-        } else {
-            dispatch({
-                type: 'ADD_CONSTRUCTOR_INGREDIENT',
-                item: item
-            })
-        }
+        dispatch(addConstructorIngredient(item));
+    }
+
+    const setTypeDraggedItem = (item) => {
+        setDraggedItem(item.type);
     }
 
     useEffect(() => {
-        dispatch({
-            type: 'CALC_CONSTRUCTOR_TOTAL_PRICE'
-        })
+        dispatch(calcTotalPrice());
     }, [constructorItems]);
     
 
@@ -164,21 +177,27 @@ const BurgerConstructor = () => {
     const wrapperClassName=`mb-10 ${styles.burgerConstructorWrapper} ${constructorItems.length === 0 && styles.emptyBurgerConstructorWrapper}`;
     
     return(<>
-        <section className={wrapperClassName} ref={dropTarget}>
-            {bunCount !== 0 && <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="top" /> }
-                <section className={styles.unlockedWrapper} >
-                    {constructorItems.map((constructorItem, index) => 
-                        (index !== bunIndex) &&
-                            <ConstructorItemElement constructorItem={constructorItem} key={constructorItem.id} index={index}/>
-                    )}
-                </section>
-            {bunCount !== 0 && <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="bottom" /> }
-        </section>
+        {bunCount !== 0 ? (
+        <>
+            <section className={wrapperClassName} ref={dropTarget}>
+                <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="top" />
+                    <section className={styles.unlockedWrapper} >
+                        {constructorItems.map((constructorItem, index) => 
+                            (index !== bunIndex &&
+                                <ConstructorItemElement constructorItem={constructorItem} key={constructorItem.id} index={index}/>
+                            )
+                        )}
+                    {isHover && draggedItem !== 'bun' && <EmptyConstructorElement type="notbun" />}
+                    </section>
+                <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="bottom" />
+            </section>
 
-        <section className={'pr-4 ' + styles.constructorTotal}>
-            <ConstructorTotalPrice totalPrice={totalPrice}/>
-            <Button type="primary" size="large" onClick={() => openModalOrder(orderAPI,constructorItems)}>Оформить заказ</Button>
-        </section>
+            <section className={'pr-4 ' + styles.constructorTotal} >
+                <ConstructorTotalPrice totalPrice={totalPrice}/>
+                <Button type="primary" size="large" onClick={() => openModalOrder(orderAPI,constructorItems)}>Оформить заказ</Button>
+            </section>
+        </>
+        ) : <EmptyConstructor dropRef={dropTarget} isHover={isHover}/>}
         </>
     );
 }
@@ -207,6 +226,16 @@ ConstructorItemElement.propTypes = {
 
 ConstructorTotalPrice.propTypes = {
     totalPrice: PropTypes.number.isRequired
+}; 
+
+EmptyConstructor.propTypes = {
+    dropRef: PropTypes.func.isRequired,
+    isHover: PropTypes.bool.isRequired
+}; 
+
+EmptyConstructorElement.propTypes = {
+    children: PropTypes.object,
+    type: PropTypes.string.isRequired
 }; 
 
 export default BurgerConstructor;

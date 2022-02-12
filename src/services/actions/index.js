@@ -115,12 +115,12 @@ export const calcTotalPrice = () => {
 export const addConstructorIngredient = ( item) => {
   if(item.type === 'bun') {
     return {
-      type: 'ADD_BUN_CONSTRUCTOR_INGREDIENT',
+      type: ADD_BUN_CONSTRUCTOR_INGREDIENT,
       bun: item
     }
   } else {
     return {
-      type: 'ADD_CONSTRUCTOR_INGREDIENT',
+      type: ADD_CONSTRUCTOR_INGREDIENT,
       item: item
     }
   }

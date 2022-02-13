@@ -37,6 +37,7 @@
     justify-content: flex-start;
     gap: 8px;
     width: 100%;
+    transition: 0.2s;
 }
 
 .constructorItem > div
@@ -52,9 +53,69 @@
     align-items: center;
 }
 
-.totalPrice
+.emptyBurgerConstructorWrapper
 {
+    height: 190px;
+}
 
+.constructorItemHidden
+{
+    opacity: 0;
+}
+
+.constructorItemDragged
+{
+    cursor: move;
+}
+
+.constructorItemNotCanDrag
+{
+    cursor: not-allowed;
+}
+
+.emptyConstructorContainer
+{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.emptyConstructorWrap
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #8585ad;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.emptyConstructorTop, .emptyConstructorBottom
+{
+    height: 80px;
+    border: 2px dashed #8585ad;
+}
+
+.emptyConstructorTop
+{
+    border-radius: 88px 88px 40px 40px;
+}
+
+.emptyConstructorBottom
+{
+    border-radius: 40px 40px 88px 88px;
+}
+
+.emptyConstructorHovered
+{
+    background: #212126;
+}
+
+.emptyConstructorWrapMin
+{
+    height: 72px;
+    margin-left: 32px;
+    margin-right: 8px;
 }
 
 @media screen and (max-width: 1024px) 

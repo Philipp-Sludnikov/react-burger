@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {BurgerIcon, ListIcon, ProfileIcon, Logo, MenuIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 import mobilelogo from '../../images/logo-mobile.png';
-
+import { Link, NavLink } from 'react-router-dom';
 
 
 const HeaderButton = (props) => {
@@ -38,10 +38,10 @@ const AppHeader = () => {
             <nav className={styles.topNav}>
                 <section className={styles.buttonsContainer}>
                     <HeaderButton classes='pt-4 pr-4 pb-4'>
-                        <BurgerIcon type="primary" /> <span className={'ml-2' + ' ' +styles.buttonTitle}>Конструктор</span>
+                        <NavLink exact to={{ pathname: '/' }} className={`text_color_inactive ${styles.navigationLink}`} activeClassName={styles.activeNavigationLink}><BurgerIcon type="primary" /> <span className='ml-2'>Конструктор</span></NavLink>
                     </HeaderButton>
                     <HeaderButton classes='p-4'>
-                        <ListIcon type="secondary" /> <span className={'ml-2 '+ styles.buttonTitle  + ' ' + styles.inactive}>Лента заказов</span>
+                        <NavLink exact to='/feed' className={`text_color_inactive ${styles.navigationLink}`} activeClassName={styles.activeNavigationLink}><ListIcon type="secondary" /> <span className='ml-2'>Лента заказов</span></NavLink>
                     </HeaderButton>
                 </section>
                 <section className={styles.logoContainer}>
@@ -49,7 +49,7 @@ const AppHeader = () => {
                 </section>
                 <section className={styles.buttonsContainer + ' ' + styles.rightButtonsContainer}>
                     <HeaderButton classes='pt-4 pl-4 pb-4'>
-                        <ProfileIcon type="secondary" /> <span className={'ml-2 '+styles.buttonTitle + ' ' + styles.inactive}>Личный кабинет</span>
+                        <NavLink to='/profile' className={`text_color_inactive ${styles.navigationLink}`} activeClassName={styles.activeNavigationLink} strict><ProfileIcon type="secondary" /> <span className='ml-2' >Личный кабинет</span></NavLink>
                     </HeaderButton>
                 </section>
             </nav>

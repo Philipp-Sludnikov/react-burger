@@ -1,11 +1,12 @@
-import {useEffect, useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
-import {IngredientPropTypes} from '../../utils/types';
+import { IngredientPropTypes } from '../../utils/types';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { getIngredients, showModalIngredient } from '../../services/actions/index';
+import { showModalIngredient } from '../../services/actions/index';
 import { useDrag } from "react-dnd";
+import { useHistory, useLocation } from 'react-router-dom';
 
 const IngredientsTabs = ({ currentTab }) => {
     const [current, setCurrent] = useState(currentTab);
@@ -20,7 +21,8 @@ const IngredientsTabs = ({ currentTab }) => {
 
 const IngredientItem = ({ingredient}) => {
     const dispatch = useDispatch();
-
+    const history = useHistory();
+    const location = useLocation();
     const constructorItems = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
     const countItem = useMemo(() => constructorItems.filter(element => ingredient._id === element._id).length, [constructorItems]);
     
@@ -56,6 +58,9 @@ const IngredientItem = ({ingredient}) => {
 
     const openModal = (ingredient) => {
         dispatch(showModalIngredient(ingredient));
+        history.push(`/ingredients/${ingredient._id}`, {background: location});
+        console.log(history);
+        
     }
 
     return (
@@ -85,12 +90,6 @@ const BurgerIngredientsList = (props) => {
 const BurgerIngredients = () => {
 
     const { ingredients } = useSelector((store: RootStateOrAny) => store.ingredients);
-    const dispatch = useDispatch();
-    const ingredientAPI = 'https://norma.nomoreparties.space/api/ingredients/';
-
-    useEffect(() => {
-        dispatch(getIngredients(ingredientAPI))
-      }, [dispatch]);
 
     const [currentTab, setCurrentTab] = useState('bun');
 

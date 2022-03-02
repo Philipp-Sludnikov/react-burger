@@ -1,0 +1,17 @@
+.ingredientWrapper
+{
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 120px;
+}
+
+.ingredientWrapper section
+{
+    text-align: center;
+}
+
+.wrapperTitle
+{
+    text-align: center;
+}

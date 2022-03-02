@@ -1,0 +1,58 @@
+.profileWrapper 
+{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 40px;
+    column-gap: 60px;
+}
+
+.profileNavWrapper
+{
+    max-width: 320px;
+    width: 100%;
+}
+
+.profileNavWrapper ul
+{
+    padding: 0;
+    margin-right: 0;
+    margin-top: 0;
+    list-style: none;
+}
+
+.navigationLink
+{
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.activeLink, .navigationLink:hover
+{
+    color: #F2F2F3;
+}
+
+.profileFormWrapper
+{
+    width: 100%;
+    max-width: 480px;
+}
+
+.profileForm
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 24px;
+}
+
+.profileButtons 
+{
+    display: flex;
+    gap: 20px;
+}

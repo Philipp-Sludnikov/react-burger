@@ -6,6 +6,8 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { getOrderData, calcTotalPrice, addConstructorIngredient, moveConstructorIngredient, removeConstructorIngredient } from '../../services/actions/index';
 import { useDrag, useDrop } from "react-dnd";
 import {IngredientPropTypes} from '../../utils/types';
+import { getCookie } from '../../utils/cookie';
+import { useHistory } from 'react-router-dom';
 
 const EmptyConstructorElement = ({children, type}) => {
     return (
@@ -36,58 +38,42 @@ const ConstructorTotalPrice = ({totalPrice}) => {
 }
 
 const ConstructorItem = (props) => {
+
+    interface ConstructorItem {
+        id: string
+        originalIndex: number
+      }
+
     const ref = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
     const constructorItems = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
 
+    const findConstructorItem = (id) => {
+          const item = constructorItems.filter((element) => `${element.id}` === id)[0];
+          return {
+            item,
+            index: constructorItems.indexOf(item),
+          }
+    }
+
     const [, dropSortTarget] = useDrop({
         accept: "sortIngredient",
-        hover(item:Object, monitor) {
-            if (!ref.current) {
-                return;
-              }
-
-            const dragIndex = item['index'];
-            const hoverIndex = props.index;
-
-            if (dragIndex === hoverIndex || hoverIndex === undefined) {
-                return
+        hover({ id: draggedId }: ConstructorItem) {
+            if (draggedId !== props.id) {
+              const { index } = findConstructorItem(props.id)
+              dispatch(moveConstructorIngredient(draggedId, index));
             }
-
-            const hoverBoundingRect = ref?.current?.getBoundingClientRect();
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-            const clientOffset = monitor.getClientOffset();
-
-            if(clientOffset == null) {
-                return;
-            }
-
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return
-            }
-
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return
-            }
-
-            
-            dispatch(moveConstructorIngredient(dragIndex, hoverIndex));
-
-            item['index'] = hoverIndex;
-        }
-    });
+          },
+        });
     
     const [{canDrag, isDragging}, dragIngredientSortBtnRef] = useDrag({
         type: "sortIngredient",
-        item: { index: props.index, id: props.constructorItem.id },
+        item: { id: props.constructorItem.id },
         canDrag: () => canDragIngredient(props),
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
             canDrag: monitor.canDrag()
-          }),
+        })
     });
 
     const canDragIngredient = (props) => {
@@ -123,7 +109,7 @@ const ConstructorItemElement = (props) => {
     }
 
     return(
-        <ConstructorItem locked={props.isLocked} constructorItem={props.constructorItem} index={props.index}>
+        <ConstructorItem locked={props.isLocked} constructorItem={props.constructorItem} index={props.index} id={props.constructorItem.id}>
             <ConstructorElement
                 type={props.type}
                 isLocked={props.isLocked}
@@ -138,6 +124,7 @@ const ConstructorItemElement = (props) => {
 
 const BurgerConstructor = () => { 
     const dispatch = useDispatch();
+    const history = useHistory();
     const [draggedItem, setDraggedItem] = useState('');
 
     const orderAPI = 'https://norma.nomoreparties.space/api/orders';
@@ -171,7 +158,11 @@ const BurgerConstructor = () => {
     const bunIndex = constructorItems.findIndex(element => element.type === 'bun');
 
     const openModalOrder = (url, items) => {
-        dispatch(getOrderData(url, items))
+        if(getCookie('token')) {
+            dispatch(getOrderData(url, items));
+        } else {
+            history.push({pathname: '/login'});
+        }
     }
 
     const wrapperClassName=`mb-10 ${styles.burgerConstructorWrapper} ${constructorItems.length === 0 && styles.emptyBurgerConstructorWrapper}`;
@@ -207,7 +198,8 @@ ConstructorItem.propTypes = {
     locked: PropTypes.bool,
     children: PropTypes.element.isRequired,
     constructorItem: PropTypes.shape(IngredientPropTypes).isRequired,
-    index: PropTypes.number
+    index: PropTypes.number,
+    id:PropTypes.string.isRequired
 }; 
 
 ConstructorItemElement.propTypes = {

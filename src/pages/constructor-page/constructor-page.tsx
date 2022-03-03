@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import styles from './constructor-page.module.css';
-import AppHeader from '../../components/app-header/app-header';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import loadingGear from '../../images/Gear.gif';
@@ -46,7 +45,6 @@ import { closeModalIngredient, closeModalOrder } from '../../services/actions/in
             <OrderDetails {...orderInfo} error={orderInfoFailed}/>
           </Modal> 
         }
-        <AppHeader />
         <main className={styles.mainWrapper}>
           <h2 className={"text text_type_main-large mb-5 " + styles.mainTitle}>Соберите бургер</h2>
           <DndProvider backend={HTML5Backend}>

@@ -1,4 +1,3 @@
-import AppHeader from '../../components/app-header/app-header';
 import styles from './profile-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
@@ -10,7 +9,7 @@ import { getCookie } from '../../utils/cookie';
 
 export const ProfileNavigation = () => {
     const dispatch = useDispatch();
-    const token = getCookie('token');
+    const token = getCookie('refreshToken');
 
     const logoutHandler = (e) => {
         e.preventDefault();
@@ -39,8 +38,8 @@ const EditProfileForm = () => {
     
 
     useEffect(() => {
-        if(typeof auth.accessToken !== 'undefined') {
-            dispatch(getUser(auth.accessToken));
+        if(getCookie('accessToken')) {
+            dispatch(getUser());
         }
     }, [auth.accessToken, user.name, user.email])
 
@@ -66,7 +65,7 @@ const EditProfileForm = () => {
     
     const formSubmitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateUser(auth.accessToken, editElements));
+        dispatch(updateUser(editElements));
         setEditElements({});
         setIsEdit(false);
     }
@@ -131,13 +130,12 @@ const EditProfileForm = () => {
 
 const ProfilePage= () => {
 
-    return (<>
-        <AppHeader />
+    return (
         <section className={styles.profileWrapper}>
             <ProfileNavigation />
             <EditProfileForm />
         </section>
-    </>);  
+    );  
 }
 
 export default ProfilePage;

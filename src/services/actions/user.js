@@ -1,4 +1,5 @@
-import { checkResponse } from '../../utils/api';
+import { getUserRequest, updateUserRequest } from '../../utils/api';
+import { SET_AUTH } from '../actions/auth';
 
 export const SET_USER = 'SET_USER';
 export const UNSET_USER = 'UNSET_USER';
@@ -11,20 +12,10 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 
-export const getUser = (token) => {
+export const getUser = () => {
     return (dispatch) => {
-        dispatch({
-        type: GET_USER
-        });
-
-        fetch('https://norma.nomoreparties.space/api/auth/user', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'authorization': token
-            },
-        })
-        .then(checkResponse)
+        dispatch({ type: GET_USER });
+        getUserRequest()
         .then(data => {
             if(data.success) {
                 dispatch({type: GET_USER_SUCCESS});
@@ -32,6 +23,9 @@ export const getUser = (token) => {
                     type: SET_USER,
                     name: data.user.name,
                     email: data.user.email
+                });
+                dispatch({
+                    type: SET_AUTH
                 });
             } else {
                 dispatch({
@@ -48,27 +42,15 @@ export const getUser = (token) => {
         });
     };
 }
-export const updateUser = (token, user) => {
+export const updateUser = (user) => {
     return (dispatch) => {
         dispatch({
         type: UPDATE_USER
         });
 
-        fetch('https://norma.nomoreparties.space/api/auth/user', {
-            method: 'PATCH',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'authorization': token
-            },
-            body: JSON.stringify(user)
-        })
-        .then(checkResponse)
+        updateUserRequest(user)
         .then(data => {
             if(data.success) {
-                console.log(data);
                 dispatch({type: UPDATE_USER_SUCCESS});
                 dispatch({
                     type: SET_USER,

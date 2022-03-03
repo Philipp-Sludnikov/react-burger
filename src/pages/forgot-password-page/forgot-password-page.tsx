@@ -1,4 +1,3 @@
-import AppHeader from '../../components/app-header/app-header';
 import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
@@ -37,14 +36,13 @@ const ForgotPassword = () => {
 const ForgotPasswordPage = () => {
     const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
     const restorePasswordStep = useSelector((store: RootStateOrAny) => store.restorePassword.restorePasswordStep);
+    
     return (<>
         {!isAuth ? (!restorePasswordStep ? (
-        <>
-            <AppHeader />
             <section className={styles.forgotWrapper}>
                 <ForgotPassword />
             </section>
-        </> ) : <Redirect to='/reset-password' />
+        ) : <Redirect to='/reset-password' />
         ) : <Redirect to='/' /> }
     </>);  
 }

@@ -1,15 +1,12 @@
-import AppHeader from '../../components/app-header/app-header';
 import styles from './register-page.module.css';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/actions/register';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { getCookie } from '../../utils/cookie';
 import { Redirect } from 'react-router-dom';
 
 const RegisterForm = () => {
-    const history = useHistory();
     const dispatch = useDispatch();
     const [nameValue, setNameValue] = useState('');
     const [emailValue, setEmailValue] = useState('');
@@ -55,12 +52,11 @@ const RegisterForm = () => {
 }
 
 const RegisterPage= () => {
-  return (<>
-    <AppHeader />
+  return (
     <section className={styles.registerWrapper}>
         <RegisterForm />
     </section>
-  </>);  
+  );  
 }
 
 export default RegisterPage;

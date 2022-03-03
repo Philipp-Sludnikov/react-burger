@@ -158,7 +158,7 @@ const BurgerConstructor = () => {
     const bunIndex = constructorItems.findIndex(element => element.type === 'bun');
 
     const openModalOrder = (url, items) => {
-        if(getCookie('token')) {
+        if(getCookie('refreshToken')) {
             dispatch(getOrderData(url, items));
         } else {
             history.push({pathname: '/login'});

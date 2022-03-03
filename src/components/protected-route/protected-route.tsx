@@ -2,7 +2,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { getCookie } from '../../utils/cookie';
 
 export const ProtectedRoute = ({children,...rest}) => {
-    const token = getCookie('token');
+    const token = getCookie('refreshToken');
     return(
     <Route
       {...rest}

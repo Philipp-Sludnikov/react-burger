@@ -1,4 +1,3 @@
-import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
@@ -57,12 +56,9 @@ const ResetPasswordPage = () => {
             {(isAuth || !restorePasswordStep) ? (
                     <Redirect to="/" />
                 ) : (
-                <>
-                    <AppHeader />
                     <section className={styles.resetPasswordWrapper}>
                         <ResetPassword />
                     </section>
-                </>
                 )
             }
         </>

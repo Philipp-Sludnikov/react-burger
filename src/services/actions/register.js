@@ -28,6 +28,8 @@ export const registerUser = (email, password, name) => {
         .then(checkResponse)
         .then(data => {
             if(data.success) {
+                setCookie('accessToken', data.accessToken);
+                setCookie('refreshToken', data.refreshToken);
                 dispatch({type: REGISTER_USER_SUCCESS});
                 dispatch({
                     type: SET_USER,
@@ -39,7 +41,6 @@ export const registerUser = (email, password, name) => {
                     accessToken: data.accessToken,
                     refreshToken: data.refreshToken
                 });
-                setCookie('token', data.refreshToken);
             } else {
                 dispatch({
                     type: REGISTER_USER_FAILED,

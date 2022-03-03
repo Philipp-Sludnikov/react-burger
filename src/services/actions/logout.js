@@ -29,7 +29,8 @@ export const logoutUser = (token) => {
                 dispatch({type: LOGOUT_USER_SUCCESS});
                 dispatch({type: UNSET_USER});
                 dispatch({type: UNSET_AUTH});
-                deleteCookie('token');
+                deleteCookie('accessToken');
+                deleteCookie('refreshToken');
                 window.location.href = '/login';
                 
             } else {

@@ -1,13 +1,13 @@
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { ConstructorPage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage, IngredientPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { getCookie } from '../../utils/cookie';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { refreshToken } from '../../services/actions/auth';
 import Modal from '../../components/modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/index';
+import { getUser } from '../../services/actions/user';
+import AppHeader from '../../components/app-header/app-header';
 
 import { closeModalIngredient } from '../../services/actions/index';
 
@@ -19,9 +19,8 @@ const App = () => {
   const ingredientAPI = 'https://norma.nomoreparties.space/api/ingredients/';
 
   useEffect( () => {
-    const token = getCookie('token');
+    dispatch(getUser());
     dispatch(getIngredients(ingredientAPI));
-    if(token) dispatch(refreshToken(token));
   },[]);
 
   const modalClose = () => {
@@ -30,6 +29,7 @@ const App = () => {
   }
 
   return (<>
+      <AppHeader />
       <Switch location={background || location}>
         <Route path="/" exact component={ConstructorPage} />
         <Route path="/feed" exact component={FeedPage} />

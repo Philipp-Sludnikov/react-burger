@@ -26,9 +26,11 @@ export const loginUser = (email, password) => {
         })
         .then(checkResponse)
         .then(data => {
+            
             if(data.success) {
+                setCookie('accessToken', data.accessToken);
+                setCookie('refreshToken', data.refreshToken);
                 dispatch({type: LOGIN_USER_SUCCESS});
-                setCookie('token', data.refreshToken);
                 dispatch({
                     type: SET_USER,
                     name: data.user.name,
@@ -49,7 +51,7 @@ export const loginUser = (email, password) => {
         .catch(e => {
             dispatch({
                 type: LOGIN_USER_FAILED,
-                error: e.message
+                error: e
             });
         });
     };

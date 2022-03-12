@@ -8,6 +8,7 @@ import { useDrag, useDrop } from "react-dnd";
 import {IngredientPropTypes} from '../../utils/types';
 import { getCookie } from '../../utils/cookie';
 import { useHistory } from 'react-router-dom';
+import { motion } from "framer-motion";
 
 const EmptyConstructorElement = ({children, type}) => {
     return (
@@ -108,7 +109,7 @@ const ConstructorItemElement = (props) => {
         dispatch(removeConstructorIngredient(id));
     }
 
-    return(
+    return(<motion.div animate={{ opacity: [0, 1] }} transition={{ type: "spring", stiffness: 100 }}>
         <ConstructorItem locked={props.isLocked} constructorItem={props.constructorItem} index={props.index} id={props.constructorItem.id}>
             <ConstructorElement
                 type={props.type}
@@ -119,6 +120,7 @@ const ConstructorItemElement = (props) => {
                 handleClose={() => removeConstructorElement(props.constructorItem.id)}
             />
         </ConstructorItem>
+        </motion.div>
     );
 }
 

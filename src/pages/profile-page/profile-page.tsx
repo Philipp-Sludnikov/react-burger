@@ -1,7 +1,7 @@
 import styles from './profile-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { logoutUser } from '../../services/actions/logout';
 import { getUser, updateUser } from '../../services/actions/user';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
@@ -41,7 +41,7 @@ const EditProfileForm = () => {
         if(getCookie('accessToken')) {
             dispatch(getUser());
         }
-    }, [auth.accessToken, user.name, user.email])
+    }, [user.name, user.email])
 
     useEffect(() => {
         setFormValues({name: user.name, email: user.email, password: 'password'});
@@ -129,13 +129,22 @@ const EditProfileForm = () => {
 
 
 const ProfilePage= () => {
+    const isLogoutSuccess = useSelector((store: RootStateOrAny) => store.logout.logoutSuccess);
+    
+    if(isLogoutSuccess && getCookie('refreshToken') === undefined) {
+        return (
+            <Redirect to='/login' />
+        );  
+    } else {
+        return (
+            <section className={styles.profileWrapper}>
+                <ProfileNavigation />
+                <EditProfileForm />
+            </section>
+        );  
+    }
 
-    return (
-        <section className={styles.profileWrapper}>
-            <ProfileNavigation />
-            <EditProfileForm />
-        </section>
-    );  
+
 }
 
 export default ProfilePage;

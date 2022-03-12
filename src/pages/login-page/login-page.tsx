@@ -1,9 +1,9 @@
 import styles from './login-page.module.css';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
-import { loginUser } from '../../services/actions/login';
+import { loginUser, unsetLogout } from '../../services/actions/login';
 import { Redirect, useLocation } from 'react-router-dom';
 import { getCookie } from '../../utils/cookie';
 
@@ -43,17 +43,25 @@ const LoginForm = () => {
 }
 
 const LoginPage = () => {
-    const isloginSuccess = useSelector((store: RootStateOrAny) => store.login.loginSuccess);
+    const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
     const { state } = useLocation();
+    const dispatch = useDispatch();
 
-    return (<>
-        {(!isloginSuccess && !getCookie('refreshToken')) ? (
+    useEffect(() => {
+        dispatch(unsetLogout());
+    });
+
+    if(!isAuth) {
+        return (
             <section className={styles.loginWrapper}>
                 <LoginForm />
             </section>
-        ) : <Redirect to={state?.from || '/'} />}
-    </>);  
-
+        )
+    } else {
+        return(
+            <Redirect to={state?.from || '/'} />
+        )
+    }
 }
 
 export default LoginPage;

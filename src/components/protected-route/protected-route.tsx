@@ -3,6 +3,8 @@ import { getCookie } from '../../utils/cookie';
 
 export const ProtectedRoute = ({children,...rest}) => {
     const token = getCookie('refreshToken');
+    console.log(token);
+    
     return(
     <Route
       {...rest}

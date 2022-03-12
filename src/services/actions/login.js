@@ -2,6 +2,7 @@ import { SET_USER } from '../actions/user';
 import { SET_AUTH } from '../actions/auth';
 import { checkResponse } from '../../utils/api';
 import { setCookie } from '../../utils/cookie';
+import { UNSET_LOGOUT } from '../actions/logout';
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
@@ -32,14 +33,12 @@ export const loginUser = (email, password) => {
                 setCookie('refreshToken', data.refreshToken);
                 dispatch({type: LOGIN_USER_SUCCESS});
                 dispatch({
+                    type: SET_AUTH
+                });
+                dispatch({
                     type: SET_USER,
                     name: data.user.name,
                     email: data.user.email
-                });
-                dispatch({
-                    type: SET_AUTH,
-                    accessToken: data.accessToken,
-                    refreshToken: data.refreshToken
                 });
             } else {
                 dispatch({
@@ -55,4 +54,10 @@ export const loginUser = (email, password) => {
             });
         });
     };
+}
+
+export const unsetLogout = () => {
+    return (dispatch) => {
+        dispatch({type: UNSET_LOGOUT});
+    }
 }

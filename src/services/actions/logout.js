@@ -4,6 +4,8 @@ import { checkResponse } from '../../utils/api';
 import { deleteCookie } from '../../utils/cookie';
 
 export const LOGOUT_USER = 'LOGOUT_USER';
+export const UNSET_LOGOUT = 'UNSET_LOGOUT';
+export const SET_LOGOUT = 'SET_LOGOUT';
 export const LOGOUT_USER_FAILED = 'LOGOUT_USER_FAILED';
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
 
@@ -26,12 +28,13 @@ export const logoutUser = (token) => {
         .then(checkResponse)
         .then(data => {
             if(data.success) {
+                deleteCookie('accessToken');
+                deleteCookie('refreshToken');
                 dispatch({type: LOGOUT_USER_SUCCESS});
                 dispatch({type: UNSET_USER});
                 dispatch({type: UNSET_AUTH});
-                deleteCookie('accessToken');
-                deleteCookie('refreshToken');
-                window.location.href = '/login';
+                dispatch({type: SET_LOGOUT});
+
                 
             } else {
                 dispatch({

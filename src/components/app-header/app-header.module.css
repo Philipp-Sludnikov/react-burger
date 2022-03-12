@@ -51,16 +51,6 @@
     transition: 0.3s;
 }
 
-.buttonTitle
-{
-    color: var(--primary-color);
-}
-
-.inactive
-{
-    color: var(--secondary-color);
-}
-
 .mobileHeader 
 {
     display: none;
@@ -108,6 +98,18 @@
     gap: 10px;
 }
 .mobileNavRefActive
+{
+    color: #F2F2F3;
+}
+
+.navigationLink
+{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.activeNavigationLink
 {
     color: #F2F2F3;
 }

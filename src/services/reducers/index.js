@@ -1,8 +1,15 @@
+import { userReducer } from './user';
+import { registerReducer } from './register';
+import { authReducer } from './auth';
+import { loginReducer } from './login';
+import { logoutReducer } from './logout';
+import { restorePasswordReducer } from './restore-password';
 import { combineReducers } from 'redux';
+
 import { 
     GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS, 
     REMOVE_CONSTRUCTOR_ITEM, CALC_CONSTRUCTOR_TOTAL_PRICE, ADD_CONSTRUCTOR_INGREDIENT, ADD_BUN_CONSTRUCTOR_INGREDIENT, MOVE_CONSTRUCTOR_INGREDIENT, RESET_CONSTRUCTOR,
-    SHOW_MODAL_INGREDIENT, CLOSE_MODAL_INGREDIENT,
+    SHOW_MODAL_INGREDIENT, CLOSE_MODAL_INGREDIENT, SET_VIEWED_INGREDIENT,
     SHOW_MODAL_ORDER, CLOSE_MODAL_ORDER, GET_ORDER_INFO, GET_ORDER_INFO_FAILED, GET_ORDER_INFO_SUCCESS
 } from '../actions/index';
 
@@ -98,9 +105,11 @@ const constructorIngredientsList = (state = constructorIngredientsState, action)
 
         }
         case MOVE_CONSTRUCTOR_INGREDIENT: {
+            const item = state.constructorIngredients.filter((element) => `${element.id}` === action.id)[0];
+            const index = state.constructorIngredients.indexOf(item);
             let currentIngredientsMoved = [...state.constructorIngredients];
-            currentIngredientsMoved.splice(action.dragIndex, 1);
-            currentIngredientsMoved.splice(action.hoverIndex, 0, state.constructorIngredients[action.dragIndex]);
+            currentIngredientsMoved.splice(index, 1);
+            currentIngredientsMoved.splice(action.atIndex, 0, item);
             return {
                 ...state,
                 constructorIngredients: currentIngredientsMoved
@@ -124,6 +133,12 @@ const modalIngredient = (state = modalIngredientState, action) => {
                 ...state,
                 currentViewedIngredient: action.ingredient,
                 visibleModalIngredient: true
+            }
+        }
+        case SET_VIEWED_INGREDIENT: {
+            return {
+                ...state,
+                currentViewedIngredient: action.ingredient
             }
         }
         case CLOSE_MODAL_INGREDIENT: {
@@ -185,5 +200,11 @@ export const rootReducer = combineReducers({
     ingredients: ingredientsList,
     constructorIngredients: constructorIngredientsList,
     modalIngredient: modalIngredient,
-    modalOrder: modalOrder
+    modalOrder: modalOrder,
+    user: userReducer,
+    register: registerReducer,
+    auth: authReducer,
+    login: loginReducer,
+    logout: logoutReducer,
+    restorePassword: restorePasswordReducer
 }) 

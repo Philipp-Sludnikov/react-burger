@@ -1,3 +1,5 @@
+import { checkResponse } from '../../utils/api';
+
 export const GET_INGREDIENTS = 'GET_INGREDIENTS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -15,6 +17,7 @@ export const ADD_BUN_CONSTRUCTOR_INGREDIENT = 'ADD_BUN_CONSTRUCTOR_INGREDIENT';
 export const RESET_CONSTRUCTOR = 'RESET_CONSTRUCTOR';
 
 export const SHOW_MODAL_INGREDIENT = 'SHOW_MODAL_INGREDIENT';
+export const SET_VIEWED_INGREDIENT = 'SET_VIEWED_INGREDIENT';
 export const CLOSE_MODAL_INGREDIENT = 'CLOSE_MODAL_INGREDIENT';
 
 export const SHOW_MODAL_ORDER = 'SHOW_MODAL_ORDER';
@@ -23,17 +26,8 @@ export const CLOSE_MODAL_ORDER = 'CLOSE_MODAL_ORDER';
 export const ADD_MODAL_INGREDIENT_INFO = 'ADD_MODAL_INGREDIENT_INFO';
 export const REMOVE_MODAL_INGREDIENT_INFO = 'REMOVE_MODAL_INGREDIENT_INFO';
 
-
-
 export const GET_ORDER_NUM = 'GET_ORDER_NUM';
 
-const checkResponse = (res) => {
-    
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-}
 
 export const getIngredients = (url) => {
     return (dispatch) => {
@@ -126,11 +120,11 @@ export const addConstructorIngredient = ( item) => {
   }
 }
 
-export const moveConstructorIngredient = (dragIndex, hoverIndex) => {
+export const moveConstructorIngredient = (id, atIndex) => {
   return {
     type: MOVE_CONSTRUCTOR_INGREDIENT,
-    dragIndex: dragIndex,
-    hoverIndex: hoverIndex
+    id: id,
+    atIndex: atIndex
   }
 }
 
@@ -144,6 +138,13 @@ export const removeConstructorIngredient = (id) => {
 export const showModalIngredient = (ingredient) => {
   return {
     type: SHOW_MODAL_INGREDIENT,
+    ingredient: ingredient
+  }
+}
+
+export const setViewedIngredient = (ingredient) => {
+  return {
+    type: SET_VIEWED_INGREDIENT,
     ingredient: ingredient
   }
 }

@@ -1,4 +1,5 @@
 import { checkResponse } from '../../utils/api';
+import { API_URL } from '../../utils/api';
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
@@ -17,7 +18,7 @@ export const forgotPassword = (email) => {
             type: FORGOT_PASSWORD
         });
 
-        fetch('https://norma.nomoreparties.space/api/password-reset', {
+        fetch(`${API_URL}/api/auth/password-reset`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -53,7 +54,7 @@ export const resetPassword = (password, token) => {
             type: RESET_PASSWORD
         });
 
-        fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+        fetch(`${API_URL}/api/auth/password-reset/reset`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'

@@ -1,8 +1,9 @@
 import styles from './order-details.module.css';
 import DoneIcon from '../../images/done.png';
-import PropTypes from 'prop-types';
+import { FC } from 'react';
+import { TOrderDetailsProps } from '../../services/types/order-details-types';
 
-const OrderDetails = (props) => {
+const OrderDetails: FC<TOrderDetailsProps> = (props) => {
     return(
       <>
         {!props.error ? 
@@ -18,10 +19,5 @@ const OrderDetails = (props) => {
       </>
       );
 }
-
-OrderDetails.propTypes = {
-    number: PropTypes.number,
-    error: PropTypes.bool.isRequired
-}; 
 
 export default OrderDetails;

@@ -1,17 +1,18 @@
 import styles from './profile-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC, MouseEvent, ChangeEvent, SyntheticEvent, FormEvent, FocusEvent } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 import { logoutUser } from '../../services/actions/logout';
 import { getUser, updateUser } from '../../services/actions/user';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../../utils/cookie';
+import { TUser, TFormValues } from '../../services/types/pages-types';
 
-export const ProfileNavigation = () => {
+export const ProfileNavigation: FC = () => {
     const dispatch = useDispatch();
-    const token = getCookie('refreshToken');
+    const token: string | undefined = getCookie('refreshToken');
 
-    const logoutHandler = (e) => {
+    const logoutHandler = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         dispatch(logoutUser(token));
     }
@@ -28,12 +29,12 @@ export const ProfileNavigation = () => {
     );
 }
 
-const EditProfileForm = () => {
+const EditProfileForm: FC = () => {
     const dispatch = useDispatch();
-    const { user, auth } = useSelector((store: RootStateOrAny) => store);
-    const [formValues, setFormValues] = useState({name: user.name, email: user.email, password: 'password'});
-    const [isEdit, setIsEdit] = useState(false);
-    const [editElements, setEditElements] = useState({});
+    const user: TUser = useSelector((store: RootStateOrAny) => store.user);
+    const [formValues, setFormValues] = useState<TFormValues>({name: user.name, email: user.email, password: 'password'});
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [editElements, setEditElements] = useState<object>({});
 
     
 
@@ -47,34 +48,32 @@ const EditProfileForm = () => {
         setFormValues({name: user.name, email: user.email, password: 'password'});
     }, [user.name, user.email])
 
-    const editHandler = (e) => {
+    const editHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setIsEdit(true);
         setFormValues({...formValues, [e.target.name]: e.target.value});
         setEditElements({...editElements, [e.target.name]:e.target.value});
-        
-        
     }
 
-    const cancelHandler = (e) => {
+    const cancelHandler = (e: SyntheticEvent<Element, Event>) => {
         e.preventDefault();
         setFormValues({name: user.name, email: user.email, password: 'password'});
         setEditElements({});
         setIsEdit(false);
     }
     
-    const formSubmitHandler = (e) => {
+    const formSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(updateUser(editElements));
         setEditElements({});
         setIsEdit(false);
     }
 
-    const onFocusPassHandler = (e) => {
+    const onFocusPassHandler = (e: FocusEvent<HTMLInputElement, Element>) => {
         setFormValues({...formValues, password: ''});
     }
 
-    const onBlurPassHandler = (e) => {
+    const onBlurPassHandler = (e: FocusEvent<HTMLInputElement, Element>) => {
         if(formValues.password == '') {
             setFormValues({...formValues, password: 'password'});
         }
@@ -128,8 +127,8 @@ const EditProfileForm = () => {
 
 
 
-const ProfilePage= () => {
-    const isLogoutSuccess = useSelector((store: RootStateOrAny) => store.logout.logoutSuccess);
+const ProfilePage: FC = () => {
+    const isLogoutSuccess: boolean = useSelector((store: RootStateOrAny) => store.logout.logoutSuccess);
     
     if(isLogoutSuccess && getCookie('refreshToken') === undefined) {
         return (

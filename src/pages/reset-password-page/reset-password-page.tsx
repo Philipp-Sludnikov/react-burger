@@ -1,18 +1,18 @@
 import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useState, FC, FormEvent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../../services/actions/restore-password';
 
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
     const dispatch = useDispatch();
-    const [passwordValue, setPasswordValue] = useState('');
-    const [tokenValue, setTokenValue] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [passwordValue, setPasswordValue] = useState<string>('');
+    const [tokenValue, setTokenValue] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(resetPassword(passwordValue, tokenValue));
     }
@@ -48,9 +48,9 @@ const ResetPassword = () => {
     );
 }
 
-const ResetPasswordPage = () => {
-    const restorePasswordStep = useSelector((store: RootStateOrAny) => store.restorePassword.restorePasswordStep);
-    const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+const ResetPasswordPage: FC = () => {
+    const restorePasswordStep: boolean = useSelector((store: RootStateOrAny) => store.restorePassword.restorePasswordStep);
+    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
     return (
         <>
             {(isAuth || !restorePasswordStep) ? (

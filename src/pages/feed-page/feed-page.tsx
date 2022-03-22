@@ -1,6 +1,7 @@
 import styles from './feed-page.module.css';
+import { FC } from 'react';
 
-const FeedPage= () => {
+const FeedPage: FC = () => {
   return (<>
     
   </>);  

@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, FC } from 'react';
 import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { getOrderData, calcTotalPrice, addConstructorIngredient, moveConstructorIngredient, removeConstructorIngredient } from '../../services/actions/index';
-import { useDrag, useDrop } from "react-dnd";
-import {IngredientPropTypes} from '../../utils/types';
+import { useDrag, useDrop, ConnectDropTarget } from "react-dnd";
+import { TConstructorItem, TConstructorIngredient, TConstructorItemElement } from '../../services/types/burger-constructor-types';
 import { getCookie } from '../../utils/cookie';
+import { API_URL } from '../../utils/api';
 import { useHistory } from 'react-router-dom';
 import { motion } from "framer-motion";
 
-const EmptyConstructorElement = ({children, type}) => {
+const EmptyConstructorElement: FC<{type: string}> = ({children, type}) => {
     return (
         <section className={`${styles.emptyConstructorWrap} ${type !== 'bun' && styles.emptyConstructorWrapMin}`}>
             {children}
@@ -18,7 +19,7 @@ const EmptyConstructorElement = ({children, type}) => {
     );
 }
 
-const EmptyConstructor = ({dropRef, isHover}) => {
+const EmptyConstructor: FC<{ isHover:boolean;dropRef: ConnectDropTarget; }> = ({dropRef, isHover}) => {
     return (
         <section className={styles.emptyConstructorContainer} ref={dropRef}>
             <section className={`${styles.emptyConstructorTop} ${isHover && styles.emptyConstructorHovered}`}></section>
@@ -30,7 +31,7 @@ const EmptyConstructor = ({dropRef, isHover}) => {
     );
 }
 
-const ConstructorTotalPrice = ({totalPrice}) => {
+const ConstructorTotalPrice: FC<{totalPrice: number}> = ({totalPrice}) => {
     return(
             <section className={'mr-10 ' + styles.totalPrice}>
                 <span className='text text_type_digits-medium'>{totalPrice}</span> <CurrencyIcon type="primary" />
@@ -38,19 +39,19 @@ const ConstructorTotalPrice = ({totalPrice}) => {
     );
 }
 
-const ConstructorItem = (props) => {
+const ConstructorItem: FC<TConstructorItem> = (props) => {
 
-    interface ConstructorItem {
+    type TConstructorDragItem = {
         id: string
-        originalIndex: number
+        originalIndex: number;
       }
 
     const ref = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
-    const constructorItems = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
+    const constructorItems: Array<TConstructorIngredient>  = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
 
-    const findConstructorItem = (id) => {
-          const item = constructorItems.filter((element) => `${element.id}` === id)[0];
+    const findConstructorItem = (id: string) => {
+          const item = constructorItems.filter((element: TConstructorIngredient) => `${element.id}` === id)[0];
           return {
             item,
             index: constructorItems.indexOf(item),
@@ -58,8 +59,8 @@ const ConstructorItem = (props) => {
     }
 
     const [, dropSortTarget] = useDrop({
-        accept: "sortIngredient",
-        hover({ id: draggedId }: ConstructorItem) {
+        accept: "sorTConstructorIngredient",
+        hover({ id: draggedId }: TConstructorDragItem) {
             if (draggedId !== props.id) {
               const { index } = findConstructorItem(props.id)
               dispatch(moveConstructorIngredient(draggedId, index));
@@ -68,7 +69,7 @@ const ConstructorItem = (props) => {
         });
     
     const [{canDrag, isDragging}, dragIngredientSortBtnRef] = useDrag({
-        type: "sortIngredient",
+        type: "sorTConstructorIngredient",
         item: { id: props.constructorItem.id },
         canDrag: () => canDragIngredient(props),
         collect: (monitor) => ({
@@ -77,14 +78,13 @@ const ConstructorItem = (props) => {
         })
     });
 
-    const canDragIngredient = (props) => {
-        if(props.locked || constructorItems.filter(elem => elem.type !== 'bun').length <= 1) {
+    const canDragIngredient = (props: TConstructorItem) => {
+        if(props.locked || constructorItems.filter((elem: TConstructorIngredient) => elem.type !== 'bun').length <= 1) {
             return false;
         } else {
             return true;
         }
     }
-
 
     dragIngredientSortBtnRef(dropSortTarget(ref));
 
@@ -95,7 +95,7 @@ const ConstructorItem = (props) => {
     );
 }
 
-const ConstructorItemElement = (props) => {
+const ConstructorItemElement: FC<TConstructorItemElement> = (props) => {
     let bunText = '';
     if(props.type === 'top') {
         bunText = '(верх)';
@@ -105,7 +105,7 @@ const ConstructorItemElement = (props) => {
 
     const dispatch = useDispatch();
 
-    const removeConstructorElement = (id) => {
+    const removeConstructorElement = (id: string) => {
         dispatch(removeConstructorIngredient(id));
     }
 
@@ -124,30 +124,30 @@ const ConstructorItemElement = (props) => {
     );
 }
 
-const BurgerConstructor = () => { 
+const BurgerConstructor: FC = () => { 
     const dispatch = useDispatch();
     const history = useHistory();
-    const [draggedItem, setDraggedItem] = useState('');
+    const [draggedItem, setDraggedItem] = useState<string>('');
 
-    const orderAPI = 'https://norma.nomoreparties.space/api/orders';
+    const orderAPI: string = `${API_URL}/api/orders`;
 
-    const constructorItems = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
+    const constructorItems: Array<TConstructorIngredient> = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
     const totalPrice = useSelector((store: RootStateOrAny) => store.constructorIngredients.totalPrice);
 
     const [{isHover}, dropTarget] = useDrop({
         accept: "ingredient",
-        drop: (item) => onDropHandler(item),
-        hover: (item) => setTypeDraggedItem(item),
+        drop: (item: TConstructorIngredient) => onDropHandler(item),
+        hover: (item: TConstructorIngredient) => setTypeDraggedItem(item),
         collect: monitor => ({
             isHover: monitor.isOver()
         })
     });
 
-    const onDropHandler = (item) => {
+    const onDropHandler = (item: TConstructorIngredient) => {
         dispatch(addConstructorIngredient(item));
     }
 
-    const setTypeDraggedItem = (item) => {
+    const setTypeDraggedItem = (item: TConstructorIngredient) => {
         setDraggedItem(item.type);
     }
 
@@ -159,7 +159,7 @@ const BurgerConstructor = () => {
     const bunCount = constructorItems.filter(element => element.type === 'bun').length;
     const bunIndex = constructorItems.findIndex(element => element.type === 'bun');
 
-    const openModalOrder = (url, items) => {
+    const openModalOrder = (url: string, items: Array<TConstructorIngredient>) => {
         if(getCookie('refreshToken')) {
             dispatch(getOrderData(url, items));
         } else {
@@ -194,42 +194,5 @@ const BurgerConstructor = () => {
         </>
     );
 }
-
-
-ConstructorItem.propTypes = {
-    locked: PropTypes.bool,
-    children: PropTypes.element.isRequired,
-    constructorItem: PropTypes.shape(IngredientPropTypes).isRequired,
-    index: PropTypes.number,
-    id:PropTypes.string.isRequired
-}; 
-
-ConstructorItemElement.propTypes = {
-    constructorItem: PropTypes.shape({
-        id: PropTypes.string,
-        type: PropTypes.string,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired
-    }),
-    isLocked: PropTypes.bool,
-    type: PropTypes.string,
-    onClick: PropTypes.any,
-    index: PropTypes.number
-}
-
-ConstructorTotalPrice.propTypes = {
-    totalPrice: PropTypes.number.isRequired
-}; 
-
-EmptyConstructor.propTypes = {
-    dropRef: PropTypes.func.isRequired,
-    isHover: PropTypes.bool.isRequired
-}; 
-
-EmptyConstructorElement.propTypes = {
-    children: PropTypes.object,
-    type: PropTypes.string.isRequired
-}; 
 
 export default BurgerConstructor;

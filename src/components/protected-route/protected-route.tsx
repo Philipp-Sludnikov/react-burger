@@ -1,10 +1,10 @@
 import { Route, Redirect } from 'react-router-dom';
 import { getCookie } from '../../utils/cookie';
+import { FC } from 'react';
+import { TProtectedRouteProps } from '../../services/types/protected-route-types';
 
-export const ProtectedRoute = ({children,...rest}) => {
-    const token = getCookie('refreshToken');
-    console.log(token);
-    
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({children,...rest}) => {
+    const token: string | undefined = getCookie('refreshToken');
     return(
     <Route
       {...rest}

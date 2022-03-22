@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
 import styles from './constructor-page.module.css';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import loadingGear from '../../images/Gear.gif';
 import Modal from '../../components/modal/modal';
-import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import OrderDetails from '../../components/order-details/order-details';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { FC } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { closeModalIngredient, closeModalOrder } from '../../services/actions/index';
+import { closeModalOrder } from '../../services/actions/index';
+import { TErrorProps, TIngredientsRequest, TOrderInfoRequest } from '../../services/types/pages-types';
 
-  const Loader = () => {
+  const Loader: FC = () => {
     return (
         <div className={styles.loader}>
             <img src={loadingGear} alt="Загрузка..." />
@@ -19,7 +19,7 @@ import { closeModalIngredient, closeModalOrder } from '../../services/actions/in
     )
   }
 
-  const Error = ({children, error}) => {
+  const Error: FC<TErrorProps> = ({children, error}) => {
     return (
         <div className={styles.errorMessage}>
             <p>{children + ' (' + error + ')'}</p>
@@ -27,10 +27,10 @@ import { closeModalIngredient, closeModalOrder } from '../../services/actions/in
     )
   }
 
-  const ConstructorPage = () => {
+  const ConstructorPage: FC = () => {
 
-  const { ingredientsRequest, ingredientsFailed, ingredientsError } = useSelector((store: RootStateOrAny) => store.ingredients);
-  const { visibleModalOrder, orderInfo, orderInfoFailed, orderInfoRequest } = useSelector((store: RootStateOrAny) => store.modalOrder);
+  const { ingredientsRequest, ingredientsFailed, ingredientsError }: TIngredientsRequest = useSelector((store: RootStateOrAny) => store.ingredients);
+  const { visibleModalOrder, orderInfo, orderInfoFailed, orderInfoRequest }: TOrderInfoRequest = useSelector((store: RootStateOrAny) => store.modalOrder);
 
 
   const dispatch = useDispatch();
@@ -61,10 +61,5 @@ import { closeModalIngredient, closeModalOrder } from '../../services/actions/in
     </div>
   );
 }
-
-Error.propTypes = {
-  children: PropTypes.string.isRequired,
-  error: PropTypes.string
-};
 
 export default ConstructorPage;

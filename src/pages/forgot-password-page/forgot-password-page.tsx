@@ -1,14 +1,15 @@
 import styles from './forgot-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useState, FC, FormEvent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { forgotPassword } from '../../services/actions/restore-password';
 
-const ForgotPassword = () => {
+const ForgotPassword: FC = () => {
     const dispatch = useDispatch();
-    const [emailValue, setEmailValue] = useState('');
-    const onSubmitHandler = (e) => {
+    const [emailValue, setEmailValue] = useState<string>('');
+
+    const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         dispatch(forgotPassword(emailValue));
     }
@@ -33,9 +34,9 @@ const ForgotPassword = () => {
     );
 }
 
-const ForgotPasswordPage = () => {
-    const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
-    const restorePasswordStep = useSelector((store: RootStateOrAny) => store.restorePassword.restorePasswordStep);
+const ForgotPasswordPage: FC = () => {
+    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+    const restorePasswordStep: boolean = useSelector((store: RootStateOrAny) => store.restorePassword.restorePasswordStep);
     
     return (<>
         {!isAuth ? (!restorePasswordStep ? (

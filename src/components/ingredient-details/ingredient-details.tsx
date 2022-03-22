@@ -2,21 +2,21 @@ import styles from './ingredient-details.module.css';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setViewedIngredient } from '../../services/actions/index';
-import { useEffect } from 'react';
+import { TIngredient } from '../../services/types/burger-ingredients-types';
+import { TIngredientDetailsParams } from '../../services/types/ingredient-details-types';
+import { useEffect, FC } from 'react';
 
-const IngredientDetails = () => {
-    const params = useParams();
+const IngredientDetails: FC = () => {
+    const params: TIngredientDetailsParams = useParams();
     const dispatch = useDispatch();
-    const currentViewedIngredient = useSelector((store: RootStateOrAny) => store.modalIngredient.currentViewedIngredient);
-    const ingredients = useSelector((store: RootStateOrAny) => store.ingredients.ingredients);
+    const currentViewedIngredient: TIngredient = useSelector((store: RootStateOrAny) => store.modalIngredient.currentViewedIngredient);
+    const ingredients: Array<TIngredient> = useSelector((store: RootStateOrAny) => store.ingredients.ingredients);
     
   
     useEffect( () => {
       if(Object.keys(currentViewedIngredient).length === 0 && ingredients.length !== 0) {
         const ingredient = ingredients.filter((el) => el._id === params.id);
         dispatch(setViewedIngredient(ingredient[0]));
-        console.log(ingredient);
-        
       }
         
     }, [ingredients, currentViewedIngredient]);

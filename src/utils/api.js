@@ -1,5 +1,7 @@
 import { getCookie, setCookie } from '../utils/cookie';
 
+export const API_URL = 'https://norma.nomoreparties.space';
+
 export const checkResponse = (res) => {
     if (res.ok) {
       return res.json();
@@ -13,7 +15,7 @@ export const getUserRequest = async () => {
   const accessToken = getCookie('accessToken');
 
   if(accessToken) {
-    const request = await fetch('https://norma.nomoreparties.space/api/auth/user', {
+    const request = await fetch(`${API_URL}/api/auth/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -36,7 +38,7 @@ export const getUserRequest = async () => {
 export const updateUserRequest = async (user) => {
       const token = getCookie('accessToken');
 
-      const request = await fetch('https://norma.nomoreparties.space/api/auth/user', {
+      const request = await fetch(`${API_URL}/api/auth/user`, {
           method: 'PATCH',
           mode: 'cors',
           cache: 'no-cache',
@@ -65,7 +67,7 @@ export const refreshUserToken = async () => {
   const refreshToken = getCookie('refreshToken');
 
   if (refreshToken) {
-      const request = await fetch('https://norma.nomoreparties.space/api/auth/token', {
+      const request = await fetch(`${API_URL}/api/auth/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'

@@ -1,23 +1,23 @@
 import styles from './register-page.module.css';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useState, FC, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/actions/register';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-const RegisterForm = () => {
+const RegisterForm: FC = () => {
     const dispatch = useDispatch();
-    const [nameValue, setNameValue] = useState('');
-    const [emailValue, setEmailValue] = useState('');
-    const [passwordValue, setPasswordValue] = useState('');
+    const [nameValue, setNameValue] = useState<string>('');
+    const [emailValue, setEmailValue] = useState<string>('');
+    const [passwordValue, setPasswordValue] = useState<string>('');
 
-    const registerHandler = (e) => {
+    const registerHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(registerUser(emailValue, passwordValue, nameValue));
     }
 
-    const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
 
     return(
         !isAuth ? 
@@ -51,7 +51,7 @@ const RegisterForm = () => {
     );
 }
 
-const RegisterPage= () => {
+const RegisterPage:FC = () => {
   return (
     <section className={styles.registerWrapper}>
         <RegisterForm />

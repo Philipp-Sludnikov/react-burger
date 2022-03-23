@@ -1,8 +1,8 @@
-import { getCookie, setCookie } from '../utils/cookie';
+import { getCookie, setCookie } from './cookie';
 
-export const API_URL = 'https://norma.nomoreparties.space';
+export const API_URL: string = 'https://norma.nomoreparties.space';
 
-export const checkResponse = (res) => {
+export const checkResponse = (res: Response): Promise<string> => {
     if (res.ok) {
       return res.json();
     }
@@ -10,7 +10,7 @@ export const checkResponse = (res) => {
     return Promise.reject(`Ошибка ${res.status}`);
 }
 
-export const getUserRequest = async () => {
+export const getUserRequest = async (): Promise<unknown> => {
 
   const accessToken = getCookie('accessToken');
 
@@ -35,7 +35,7 @@ export const getUserRequest = async () => {
   }
 }
 
-export const updateUserRequest = async (user) => {
+export const updateUserRequest = async (user: string): Promise<unknown> => {
       const token = getCookie('accessToken');
 
       const request = await fetch(`${API_URL}/api/auth/user`, {
@@ -45,7 +45,7 @@ export const updateUserRequest = async (user) => {
           credentials: 'same-origin',
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            'authorization': token
+            'authorization': token ? token : ''
           },
           body: JSON.stringify(user)
       });
@@ -62,7 +62,7 @@ export const updateUserRequest = async (user) => {
 
   };
 
-export const refreshUserToken = async () => {
+export const refreshUserToken = async (): Promise<void>  => {
   
   const refreshToken = getCookie('refreshToken');
 

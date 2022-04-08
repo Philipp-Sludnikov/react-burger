@@ -10,6 +10,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { closeModalOrder } from '../../services/actions/index';
 import { TErrorProps, TIngredientsRequest, TOrderInfoRequest } from '../../services/types/pages-types';
+import { AppDispatch, AppThunk } from '../../services/types/types';
 
   const Loader: FC = () => {
     return (
@@ -33,7 +34,7 @@ import { TErrorProps, TIngredientsRequest, TOrderInfoRequest } from '../../servi
   const { visibleModalOrder, orderInfo, orderInfoFailed, orderInfoRequest }: TOrderInfoRequest = useSelector((store: RootStateOrAny) => store.modalOrder);
 
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch | AppThunk>();
 
   return (
     <div>

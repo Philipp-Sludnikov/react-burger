@@ -6,6 +6,7 @@ import { showModalIngredient } from '../../services/actions/index';
 import { useDrag } from "react-dnd";
 import { useHistory, useLocation } from 'react-router-dom';
 import { TIngredientItemProps, TIngredient, TBurgerIngredientsListProps, TIngredients } from '../../services/types/burger-ingredients-types';
+import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
 
 const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
     const [current, setCurrent] = useState<string>(currentTab);
@@ -19,7 +20,7 @@ const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
 };
 
 const IngredientItem: FC<TIngredientItemProps> = ({ingredient}) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
     const history = useHistory();
     const location = useLocation();
     const constructorItems: Array<TIngredient> = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
@@ -86,7 +87,7 @@ const BurgerIngredientsList: FC<TBurgerIngredientsListProps> = (props) => {
 
 const BurgerIngredients: FC = () => {
 
-    const ingredients: Array<TIngredient> = useSelector((store: RootStateOrAny) => store.ingredients.ingredients);
+    const ingredients: Array<TIngredient> = useSelector((store: RootState) => store.ingredients.ingredients);
 
     const [currentTab, setCurrentTab] = useState<string>('bun');
 

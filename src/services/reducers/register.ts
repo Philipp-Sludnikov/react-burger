@@ -1,12 +1,14 @@
 import { REGISTER_USER, REGISTER_USER_FAILED , REGISTER_USER_SUCCESS } from '../actions/register';
+import { TRegisterActions } from '../types/action-types/register-action-types';
+import { TInitialState } from '../types/reducer-types/register-reducer-types';
 
-const initialState = {
+const initialState: TInitialState = {
     registerRequest: false, 
     registerFailed: false,
     registerError: '',
 };
 
-export const registerReducer = (state = initialState, action) => {
+export const registerReducer = (state = initialState, action: TRegisterActions): TInitialState => {
     switch (action.type) {
         case REGISTER_USER: {
             return {

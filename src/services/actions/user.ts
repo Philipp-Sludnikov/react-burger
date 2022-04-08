@@ -1,19 +1,20 @@
 import { getUserRequest, updateUserRequest } from '../../utils/api';
-import { SET_AUTH } from '../actions/auth';
+import { AppDispatch, AppThunk } from '../types/types';
+import { SET_AUTH } from './auth';
 
-export const SET_USER = 'SET_USER';
-export const UNSET_USER = 'UNSET_USER';
+export const SET_USER: 'SET_USER' = 'SET_USER';
+export const UNSET_USER: 'UNSET_USER' = 'UNSET_USER';
 
-export const GET_USER = 'GET_USER';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER: 'GET_USER' = 'GET_USER';
+export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
 
-export const UPDATE_USER = 'UPDATE_USER';
-export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER: 'UPDATE_USER' = 'UPDATE_USER';
+export const UPDATE_USER_FAILED: 'UPDATE_USER_FAILED' = 'UPDATE_USER_FAILED';
+export const UPDATE_USER_SUCCESS: 'UPDATE_USER_SUCCESS' = 'UPDATE_USER_SUCCESS';
 
-export const getUser = () => {
-    return (dispatch) => {
+export const getUser: AppThunk = () => {
+    return (dispatch: AppDispatch) => {
         dispatch({ type: GET_USER });
         getUserRequest()
         .then(data => {
@@ -34,7 +35,7 @@ export const getUser = () => {
                 });
             }
         })
-        .catch(e => {
+        .catch((e: Error) => {
             dispatch({
                 type: GET_USER_FAILED,
                 error: e.message
@@ -42,12 +43,10 @@ export const getUser = () => {
         });
     };
 }
-export const updateUser = (user) => {
+export const updateUser: AppThunk = (user: object) => {
     return (dispatch) => {
-        dispatch({
-        type: UPDATE_USER
-        });
-
+        dispatch({ type: UPDATE_USER});
+        
         updateUserRequest(user)
         .then(data => {
             if(data.success) {
@@ -64,7 +63,7 @@ export const updateUser = (user) => {
                 });
             }
         })
-        .catch(e => {
+        .catch((e: Error) => {
             dispatch({
                 type: UPDATE_USER_FAILED,
                 error: e.message

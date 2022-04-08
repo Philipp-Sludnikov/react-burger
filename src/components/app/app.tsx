@@ -1,10 +1,11 @@
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
-import { ConstructorPage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage, IngredientPage } from '../../pages';
+import { ConstructorPage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage, IngredientPage, FeedDetailPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch } from 'react-redux';
 import { useEffect, FC } from 'react';
-import Modal from '../../components/modal/modal';
+import Modal from '../modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
+import { FeedDetails } from '../../pages/feed-detail-page/feed-detail-page';
 import { getIngredients } from '../../services/actions/index';
 import { getUser } from '../../services/actions/user';
 import AppHeader from '../../components/app-header/app-header';
@@ -12,9 +13,10 @@ import { API_URL } from '../../utils/api';
 import { Location } from "history";
 
 import { closeModalIngredient } from '../../services/actions/index';
+import { AppDispatch, AppThunk } from '../../services/types/types';
 
 const App: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch | AppThunk>();
   const history = useHistory<Location>();
   const location = useLocation<{ background?: Location<{} | null | undefined> }>();
   const background = location.state && location.state.background;
@@ -25,9 +27,18 @@ const App: FC = () => {
     dispatch(getIngredients(ingredientAPI));
   },[]);
 
-  const modalClose = () => {
+  const modalClose = (type: string) => {
     dispatch(closeModalIngredient());
-    history.push('/');
+    if(type === 'ingredients') {
+      history.push('/');
+    } else if(type === 'feed') {
+      history.push('/feed');
+    } else if(type === 'profile-orders') {
+      history.push('/profile/orders');
+    } else {
+      history.push('/');
+    }
+
   }
 
   return (<>
@@ -35,6 +46,7 @@ const App: FC = () => {
       <Switch location={background || location}>
         <Route path="/" exact component={ConstructorPage} />
         <Route path="/feed" exact component={FeedPage} />
+        <Route path="/feed/:id" exact component={FeedDetailPage} />
         <Route path="/login" exact component={LoginPage} />
         <Route path="/register" exact component={RegisterPage} />
         <Route path="/forgot-password" exact component={ForgotPasswordPage} />
@@ -45,17 +57,32 @@ const App: FC = () => {
           <OrdersPage />
         </ProtectedRoute>
 
+        <ProtectedRoute path="/profile/orders/:id" exact>
+          <FeedDetailPage />
+        </ProtectedRoute>
+
         <ProtectedRoute path="/profile" exact>
           <ProfilePage />
         </ProtectedRoute>
         
       </Switch>
       {background && <Route path='/ingredients/:id'>
-        <Modal header="Детали ингредиента" modalClose={modalClose}>
+        <Modal header="Детали ингредиента" modalClose={() => modalClose('ingredients')}>
           <IngredientDetails />
         </Modal> 
-      </Route>
-      }
+      </Route>}
+
+      {background && <Route path='/feed/:id'>
+        <Modal modalClose={() => modalClose('feed')}>
+          <FeedDetails />
+        </Modal> 
+      </Route>}
+
+      {background && <Route path='/profile/orders/:id'>
+        <Modal modalClose={() => modalClose('profile-orders')}>
+          <FeedDetails />
+        </Modal> 
+      </Route>}
       </>
   );
 }

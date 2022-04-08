@@ -1,23 +1,22 @@
-import { SET_USER } from '../actions/user';
-import { SET_AUTH } from '../actions/auth';
+import { SET_USER } from './user';
+import { SET_AUTH } from './auth';
 import { checkResponse } from '../../utils/api';
 import { setCookie } from '../../utils/cookie';
-import { UNSET_LOGOUT } from '../actions/logout';
+import { UNSET_LOGOUT } from './logout';
 import { API_URL } from '../../utils/api';
+import { AppDispatch, AppThunk } from '../types/types';
 
-export const LOGIN_USER = 'LOGIN_USER';
-export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
-export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER: 'LOGIN_USER' = 'LOGIN_USER';
+export const LOGIN_USER_FAILED: 'LOGIN_USER_FAILED' = 'LOGIN_USER_FAILED';
+export const LOGIN_USER_SUCCESS: 'LOGIN_USER_SUCCESS' = 'LOGIN_USER_SUCCESS';
 
-export const loginUser = (email, password) => {
+export const loginUser: AppThunk = (email: string, password: string) => {
     const loginInfo = {
         email: email,
         password: password,
     };
-    return (dispatch) => {
-        dispatch({
-        type: LOGIN_USER
-        });
+    return (dispatch: AppDispatch) => {
+        dispatch({ type: LOGIN_USER });
 
         fetch(`${API_URL}/api/auth/login`, {
             method: 'POST',
@@ -57,8 +56,8 @@ export const loginUser = (email, password) => {
     };
 }
 
-export const unsetLogout = () => {
-    return (dispatch) => {
+export const unsetLogout: AppThunk = () => {
+    return (dispatch: AppDispatch) => {
         dispatch({type: UNSET_LOGOUT});
     }
 }

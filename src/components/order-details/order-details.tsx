@@ -5,7 +5,7 @@ import { TOrderDetailsProps } from '../../services/types/order-details-types';
 
 const OrderDetails: FC<TOrderDetailsProps> = (props) => {
     return(
-      <>
+      <section className={styles.orderDetailsWrapper}>
         {!props.error ? 
         <>
         <p className={"text text_type_digits-large mt-8 mb-8 " + styles.orderNum}>{props.number}</p>
@@ -16,7 +16,7 @@ const OrderDetails: FC<TOrderDetailsProps> = (props) => {
         </> : 
         <p className="text text_type_main-medium mb-15">Оформление заказа завершилось ошибкой!</p>
       }
-      </>
+      </section>
       );
 }
 

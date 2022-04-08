@@ -1,22 +1,21 @@
 import { checkResponse } from '../../utils/api';
 import { API_URL } from '../../utils/api';
+import { AppDispatch, AppThunk } from '../types/types';
 
-export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
-export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD: 'FORGOT_PASSWORD' = 'FORGOT_PASSWORD';
+export const FORGOT_PASSWORD_FAILED: 'FORGOT_PASSWORD_FAILED' = 'FORGOT_PASSWORD_FAILED';
+export const FORGOT_PASSWORD_SUCCESS: 'FORGOT_PASSWORD_SUCCESS' = 'FORGOT_PASSWORD_SUCCESS';
 
-export const RESET_PASSWORD = 'RESET_PASSWORD';
-export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD: 'RESET_PASSWORD' = 'RESET_PASSWORD';
+export const RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED' = 'RESET_PASSWORD_FAILED';
+export const RESET_PASSWORD_SUCCESS: 'RESET_PASSWORD_SUCCESS' = 'RESET_PASSWORD_SUCCESS';
 
-export const SET_RESTORE_PASS_STEP = 'SET_RESTORE_PASS_STEP';
-export const SET_RESET_PASS_STEP = 'SET_RESET_PASS_STEP';
+export const SET_RESTORE_PASS_STEP: 'SET_RESTORE_PASS_STEP' = 'SET_RESTORE_PASS_STEP';
+export const SET_RESET_PASS_STEP: 'SET_RESET_PASS_STEP' = 'SET_RESET_PASS_STEP';
 
-export const forgotPassword = (email) => {
-    return (dispatch) => {
-        dispatch({
-            type: FORGOT_PASSWORD
-        });
+export const forgotPassword: AppThunk = (email: string) => {
+    return (dispatch: AppDispatch) => {
+        dispatch({ type: FORGOT_PASSWORD });
 
         fetch(`${API_URL}/api/auth/password-reset`, {
             method: 'POST',
@@ -39,7 +38,7 @@ export const forgotPassword = (email) => {
                 });
             }
         })
-        .catch(e => {
+        .catch((e: Error) => {
             dispatch({
                 type: FORGOT_PASSWORD_FAILED,
                 error: e.message
@@ -48,11 +47,9 @@ export const forgotPassword = (email) => {
     };
 }
 
-export const resetPassword = (password, token) => {
-    return (dispatch) => {
-        dispatch({
-            type: RESET_PASSWORD
-        });
+export const resetPassword: AppThunk = (password: string, token: string) => {
+    return (dispatch: AppDispatch) => {
+        dispatch({ type: RESET_PASSWORD });
 
         fetch(`${API_URL}/api/auth/password-reset/reset`, {
             method: 'POST',
@@ -75,7 +72,7 @@ export const resetPassword = (password, token) => {
                 });
             }
         })
-        .catch(e => {
+        .catch((e: Error) => {
             dispatch({
                 type: RESET_PASSWORD_FAILED,
                 error: e.message

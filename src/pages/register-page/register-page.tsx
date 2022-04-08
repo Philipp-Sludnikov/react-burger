@@ -3,11 +3,12 @@ import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burg
 import { useState, FC, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/actions/register';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
 
 const RegisterForm: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
     const [nameValue, setNameValue] = useState<string>('');
     const [emailValue, setEmailValue] = useState<string>('');
     const [passwordValue, setPasswordValue] = useState<string>('');
@@ -17,7 +18,7 @@ const RegisterForm: FC = () => {
         dispatch(registerUser(emailValue, passwordValue, nameValue));
     }
 
-    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+    const isAuth: boolean = useSelector((store: RootState) => store.auth.isAuth);
 
     return(
         !isAuth ? 

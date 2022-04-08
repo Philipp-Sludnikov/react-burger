@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, FC } from 'react';
-import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -10,6 +9,7 @@ import { getCookie } from '../../utils/cookie';
 import { API_URL } from '../../utils/api';
 import { useHistory } from 'react-router-dom';
 import { motion } from "framer-motion";
+import { AppDispatch, AppThunk } from '../../services/types/types';
 
 const EmptyConstructorElement: FC<{type: string}> = ({children, type}) => {
     return (
@@ -47,7 +47,7 @@ const ConstructorItem: FC<TConstructorItem> = (props) => {
       }
 
     const ref = useRef<HTMLInputElement>(null);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
     const constructorItems: Array<TConstructorIngredient>  = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
 
     const findConstructorItem = (id: string) => {
@@ -103,7 +103,7 @@ const ConstructorItemElement: FC<TConstructorItemElement> = (props) => {
         bunText = '(низ)';
     }
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     const removeConstructorElement = (id: string) => {
         dispatch(removeConstructorIngredient(id));
@@ -125,7 +125,7 @@ const ConstructorItemElement: FC<TConstructorItemElement> = (props) => {
 }
 
 const BurgerConstructor: FC = () => { 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
     const history = useHistory();
     const [draggedItem, setDraggedItem] = useState<string>('');
 

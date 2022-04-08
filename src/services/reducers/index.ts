@@ -4,6 +4,7 @@ import { authReducer } from './auth';
 import { loginReducer } from './login';
 import { logoutReducer } from './logout';
 import { restorePasswordReducer } from './restore-password';
+import { websocketReducer } from './websocket';
 import { combineReducers } from 'redux';
 
 import { 
@@ -12,8 +13,10 @@ import {
     SHOW_MODAL_INGREDIENT, CLOSE_MODAL_INGREDIENT, SET_VIEWED_INGREDIENT,
     SHOW_MODAL_ORDER, CLOSE_MODAL_ORDER, GET_ORDER_INFO, GET_ORDER_INFO_FAILED, GET_ORDER_INFO_SUCCESS
 } from '../actions/index';
+import { TConstructorIngredientsState, TIngredientsState, TModalIngredientState, TModalOrderState } from '../types/reducer-types/index-reducer-types';
+import { TIndexActions } from '../types/action-types/index-action-types';
 
-const ingredientsState = {
+const ingredientsState: TIngredientsState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientsError: '',
@@ -21,24 +24,24 @@ const ingredientsState = {
     
 }
 
-const constructorIngredientsState = {
+const constructorIngredientsState: TConstructorIngredientsState = {
     constructorIngredients: [],
     totalPrice: 0
 }
 
-const modalIngredientState = {
+const modalIngredientState: TModalIngredientState = {
     visibleModalIngredient: false,
     currentViewedIngredient: {}
 }
 
-const modalOrderState = {
+const modalOrderState: TModalOrderState = {
     orderInfoRequest: false,
     orderInfoFailed: false,
     visibleModalOrder: false,
     orderInfo: {}
 }
 
-const ingredientsList = (state = ingredientsState, action) => {
+const ingredientsList = (state = ingredientsState, action: TIndexActions): TIngredientsState => {
     switch (action.type) {
         case GET_INGREDIENTS : {
             return {
@@ -67,7 +70,7 @@ const ingredientsList = (state = ingredientsState, action) => {
     }
 }
 
-const constructorIngredientsList = (state = constructorIngredientsState, action) => {
+const constructorIngredientsList = (state = constructorIngredientsState, action: TIndexActions): TConstructorIngredientsState => {
     switch (action.type) {
         case CALC_CONSTRUCTOR_TOTAL_PRICE: {
             return {
@@ -86,7 +89,7 @@ const constructorIngredientsList = (state = constructorIngredientsState, action)
         case ADD_CONSTRUCTOR_INGREDIENT: {
             return {
                 ...state,
-                constructorIngredients: [...state.constructorIngredients, {id: Math.random().toString(16).slice(2), ...action.item}]
+                constructorIngredients: [...state.constructorIngredients, {...action.item, id: Math.random().toString(16).slice(2)}]
             }
         }
         case ADD_BUN_CONSTRUCTOR_INGREDIENT: {
@@ -94,12 +97,12 @@ const constructorIngredientsList = (state = constructorIngredientsState, action)
             if(bunIndex === -1) {
                 return {
                     ...state,
-                    constructorIngredients: [...state.constructorIngredients, {id: Math.random().toString(16).slice(2), ...action.bun}]
+                    constructorIngredients: [...state.constructorIngredients, {...action.bun, id: Math.random().toString(16).slice(2)}]
                 }
             } else {
                 return {
                     ...state,
-                    constructorIngredients: [...state.constructorIngredients.filter(elem => elem.type !== 'bun'), {id: Math.random().toString(16).slice(2), ...action.bun}]
+                    constructorIngredients: [...state.constructorIngredients.filter(elem => elem.type !== 'bun'), {...action.bun, id: Math.random().toString(16).slice(2)}]
                 }
             }
 
@@ -126,7 +129,7 @@ const constructorIngredientsList = (state = constructorIngredientsState, action)
     }
 }
 
-const modalIngredient = (state = modalIngredientState, action) => {
+const modalIngredient = (state = modalIngredientState, action: TIndexActions): TModalIngredientState => {
     switch (action.type) {
         case SHOW_MODAL_INGREDIENT: {
             return {
@@ -153,7 +156,7 @@ const modalIngredient = (state = modalIngredientState, action) => {
     }
 }
 
-const modalOrder = (state = modalOrderState, action) => {
+const modalOrder = (state = modalOrderState, action: TIndexActions): TModalOrderState => {
     switch (action.type) {
         case GET_ORDER_INFO: {
             return {
@@ -206,5 +209,6 @@ export const rootReducer = combineReducers({
     auth: authReducer,
     login: loginReducer,
     logout: logoutReducer,
-    restorePassword: restorePasswordReducer
+    restorePassword: restorePasswordReducer,
+    websocketReducer: websocketReducer
 }) 

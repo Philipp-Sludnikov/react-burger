@@ -2,15 +2,16 @@ import styles from './login-page.module.css';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useEffect, FC, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { loginUser, unsetLogout } from '../../services/actions/login';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Location } from "history";
+import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
 
 const LoginForm: FC = () => {
     const [emailValue, setEmailValue] = useState<string>('');
     const [passwordValue, setPasswordValue] = useState<string>('');
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     const loginHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,9 +44,9 @@ const LoginForm: FC = () => {
 }
 
 const LoginPage: FC = () => {
-    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+    const isAuth: boolean = useSelector((store: RootState) => store.auth.isAuth);
     const { state } = useLocation<{from?: Location<{} | null | undefined>}>();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     useEffect(() => {
         dispatch(unsetLogout());

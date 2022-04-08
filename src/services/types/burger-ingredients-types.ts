@@ -29,3 +29,22 @@ export type TBurgerIngredientsListProps = {
   ingredients: Array<TIngredient>;
   type: string;
 }
+
+export type TOrderInfoOwner = {
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TOrderInfo = {
+  ingredients: Array<TIngredient>;
+  _id: string;
+  owner: TOrderInfoOwner;
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+  price: number;
+}

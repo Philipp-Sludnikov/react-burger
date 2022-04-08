@@ -3,16 +3,17 @@ import styles from './modal.module.css';
 import PropTypes from 'prop-types';
 import {createPortal} from 'react-dom';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useRef } from 'react';
+import { TModalProps } from '../../services/types/modal-types';
+import { useEffect, FC, MouseEvent } from 'react';
 
-const Modal = ({header, children, modalClose}) => {
+const Modal: FC<TModalProps> = ({header, children, modalClose}) => {
     const modalRoot = document.getElementById('modal') as HTMLElement;
 
-    const modalClick = (event) => {
+    const modalClick = (event: MouseEvent<HTMLElement>): void  => {
       event.stopPropagation();
     }
 
-    const modalKeyDown = (event) => {
+    const modalKeyDown = (event: KeyboardEvent): void => {
       if(event.key == 'Escape') {
         modalClose();
       }
@@ -42,11 +43,5 @@ const Modal = ({header, children, modalClose}) => {
         modalRoot
       );
 }
-
-Modal.propTypes = {
-  header: PropTypes.string,
-  children: PropTypes.element.isRequired,
-  modalClose: PropTypes.func.isRequired
-};
 
 export default Modal;

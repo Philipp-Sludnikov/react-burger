@@ -1,18 +1,18 @@
 import styles from './login-page.module.css';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { loginUser, unsetLogout } from '../../services/actions/login';
 import { Redirect, useLocation } from 'react-router-dom';
-import { getCookie } from '../../utils/cookie';
+import { Location } from "history";
 
-const LoginForm = () => {
-    const [emailValue, setEmailValue] = useState('');
-    const [passwordValue, setPasswordValue] = useState('');
+const LoginForm: FC = () => {
+    const [emailValue, setEmailValue] = useState<string>('');
+    const [passwordValue, setPasswordValue] = useState<string>('');
     const dispatch = useDispatch();
 
-    const loginHandler = (e) => {
+    const loginHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(loginUser(emailValue, passwordValue));
     }
@@ -42,9 +42,9 @@ const LoginForm = () => {
     );
 }
 
-const LoginPage = () => {
-    const isAuth = useSelector((store: RootStateOrAny) => store.auth.isAuth);
-    const { state } = useLocation();
+const LoginPage: FC = () => {
+    const isAuth: boolean = useSelector((store: RootStateOrAny) => store.auth.isAuth);
+    const { state } = useLocation<{from?: Location<{} | null | undefined>}>();
     const dispatch = useDispatch();
 
     useEffect(() => {

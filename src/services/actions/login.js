@@ -3,6 +3,7 @@ import { SET_AUTH } from '../actions/auth';
 import { checkResponse } from '../../utils/api';
 import { setCookie } from '../../utils/cookie';
 import { UNSET_LOGOUT } from '../actions/logout';
+import { API_URL } from '../../utils/api';
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
@@ -18,7 +19,7 @@ export const loginUser = (email, password) => {
         type: LOGIN_USER
         });
 
-        fetch('https://norma.nomoreparties.space/api/auth/login', {
+        fetch(`${API_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'

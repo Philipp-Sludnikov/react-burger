@@ -2,21 +2,23 @@ import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { ConstructorPage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage, IngredientPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import Modal from '../../components/modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/index';
 import { getUser } from '../../services/actions/user';
 import AppHeader from '../../components/app-header/app-header';
+import { API_URL } from '../../utils/api';
+import { Location } from "history";
 
 import { closeModalIngredient } from '../../services/actions/index';
 
-const App = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
+  const history = useHistory<Location>();
+  const location = useLocation<{ background?: Location<{} | null | undefined> }>();
   const background = location.state && location.state.background;
-  const ingredientAPI = 'https://norma.nomoreparties.space/api/ingredients/';
+  const ingredientAPI = `${API_URL}/api/ingredients/`;
 
   useEffect( () => {
     dispatch(getUser());

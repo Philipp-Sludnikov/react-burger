@@ -2,6 +2,7 @@ import { SET_USER } from '../actions/user';
 import { SET_AUTH } from '../actions/auth';
 import { checkResponse } from '../../utils/api';
 import { setCookie } from '../../utils/cookie';
+import { API_URL } from '../../utils/api';
 
 export const REGISTER_USER = 'REGISTER_USER';
 export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
@@ -18,7 +19,7 @@ export const registerUser = (email, password, name) => {
         type: REGISTER_USER
         });
 
-        fetch('https://norma.nomoreparties.space/api/auth/register', {
+        fetch(`${API_URL}/api/auth/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'

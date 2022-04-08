@@ -1,8 +1,9 @@
 import styles from './modal-overlay.module.css';
-import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
+import { TModalOverlayProps } from '../../services/types/modal-types';
+import { FC } from 'react';
 
-const ModalOverlay = ({children, modalClose}) => {
+const ModalOverlay: FC<TModalOverlayProps> = ({children, modalClose}) => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className={styles.overlay} onClick={() => modalClose()}>
@@ -11,10 +12,5 @@ const ModalOverlay = ({children, modalClose}) => {
         </motion.div>
     )
 }
-
-ModalOverlay.propTypes = {
-    children: PropTypes.any.isRequired,
-    modalClose: PropTypes.func.isRequired
-  };
 
 export default ModalOverlay;

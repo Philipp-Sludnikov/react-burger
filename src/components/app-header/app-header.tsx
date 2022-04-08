@@ -1,12 +1,14 @@
-import {useState} from 'react';
-import PropTypes from 'prop-types';
+import {useState, FC} from 'react';
 import {BurgerIcon, ListIcon, ProfileIcon, Logo, MenuIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 import mobilelogo from '../../images/logo-mobile.png';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
+type THeaderButton = {
+    classes: string
+}
 
-const HeaderButton = (props) => {
+const HeaderButton: FC<THeaderButton> = (props) => {
     return (
     <button className={props.classes + ' ' + styles.headerButton}>
        {props.children}
@@ -14,7 +16,7 @@ const HeaderButton = (props) => {
 };
 
 const MobileHeader = () => {
-    const [opened, setOpened] = useState(false);
+    const [opened, setOpened] = useState<boolean>(false);
     return(
         <header className={styles.mobileHeader + ' ' + (opened === true && styles.mobileHeaderFixed)}>
             {(opened === false) ? 
@@ -57,11 +59,6 @@ const AppHeader = () => {
         <MobileHeader />
         </>
     );
-}
-
-HeaderButton.propTypes = {
-    classes: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired
 }
 
 export default AppHeader;

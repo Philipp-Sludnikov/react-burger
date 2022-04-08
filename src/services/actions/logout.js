@@ -2,6 +2,7 @@ import { UNSET_USER } from '../actions/user';
 import { UNSET_AUTH } from '../actions/auth';
 import { checkResponse } from '../../utils/api';
 import { deleteCookie } from '../../utils/cookie';
+import { API_URL } from '../../utils/api';
 
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UNSET_LOGOUT = 'UNSET_LOGOUT';
@@ -18,7 +19,7 @@ export const logoutUser = (token) => {
             type: LOGOUT_USER
         });
 
-        fetch('https://norma.nomoreparties.space/api/auth/logout', {
+        fetch(`${API_URL}/api/auth/logout`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'

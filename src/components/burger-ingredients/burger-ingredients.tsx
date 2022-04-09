@@ -1,20 +1,25 @@
-import { useState, useMemo, FC, UIEvent } from 'react';
+import { useState, useMemo, FC, UIEvent, useRef } from 'react';
 import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import { showModalIngredient } from '../../services/actions/index';
 import { useDrag } from "react-dnd";
 import { useHistory, useLocation } from 'react-router-dom';
-import { TIngredientItemProps, TIngredient, TBurgerIngredientsListProps } from '../../services/types/burger-ingredients-types';
+import { TIngredientItemProps, TIngredient, TBurgerIngredientsListProps, TIngredientsTabsProps } from '../../services/types/burger-ingredients-types';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
-const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
-    const [current, setCurrent] = useState<string>(currentTab);
+const IngredientsTabs: FC<TIngredientsTabsProps> = ({currentTab, refBun, refSauce, refMain}) => {
+
+    const onTabClick = (e: string) => {
+        if (e === "bun") {refBun.current?.scrollIntoView({ behavior: 'smooth' })};
+        if (e === "sauce") {refSauce.current?.scrollIntoView({ behavior: 'smooth' })};
+        if (e === "main") {refMain.current?.scrollIntoView({block: "center", behavior: "smooth"})};
+    }
 
     return (
         <div className={'mb-10 ' + styles.ingredientTabs}>
-            <Tab value="bun" active={currentTab === 'bun'} onClick={setCurrent}>Булки</Tab>
-            <Tab value="sauce" active={currentTab === 'sauce'} onClick={setCurrent}>Соусы</Tab>
-            <Tab value="main" active={currentTab === 'main'} onClick={setCurrent}>Начинки</Tab>
+            <Tab value="bun" active={currentTab === 'bun'} onClick={onTabClick}>Булки</Tab>
+            <Tab value="sauce" active={currentTab === 'sauce'} onClick={onTabClick}>Соусы</Tab>
+            <Tab value="main" active={currentTab === 'main'} onClick={onTabClick}>Начинки</Tab>
         </div>
     )
 };
@@ -75,7 +80,7 @@ const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
 const BurgerIngredientsList: FC<TBurgerIngredientsListProps> = (props) => {
     return (
         <>
-            <h3 className={'text text_type_main-medium ' + styles.sectionName}>{props.heading}</h3>
+            <h3 className={'text text_type_main-medium ' + styles.sectionName} ref={props.refItem}>{props.heading}</h3>
             <ul className={'pt-6 pl-4 pr-2 pb-2 ' + styles.listOfIngredients}>
             {props.ingredients.map(ingredient => ingredient.type === props.type && (
                 <IngredientItem ingredient={ingredient} key={ingredient._id} />
@@ -91,9 +96,13 @@ const BurgerIngredients: FC = () => {
 
     const [currentTab, setCurrentTab] = useState<string>('bun');
 
+    const refBun = useRef<null | HTMLDivElement>(null); 
+    const refSauce = useRef<null | HTMLDivElement>(null); 
+    const refMain = useRef<null | HTMLDivElement>(null); 
+
     const handleIngredientsListScroll = (e: UIEvent<HTMLElement>) => { 
         const ingredientsWrapper = e.target as HTMLElement;
-        const ingredientsWrapperPos = ingredientsWrapper.getBoundingClientRect().top;
+        const ingredientsWrapperPos = ingredientsWrapper.getBoundingClientRect().top + 30;
         const elements = ingredientsWrapper.getElementsByTagName('h3');
         
         const elementsArr = Array.from(elements);
@@ -118,11 +127,11 @@ const BurgerIngredients: FC = () => {
 
     return(
         <>
-            <IngredientsTabs currentTab={currentTab}/>
+            <IngredientsTabs currentTab={currentTab} refBun={refBun} refSauce={refSauce} refMain={refMain}/>
             <section className={styles.ingredientsListWrapper} onScroll={(e) => handleIngredientsListScroll(e)}>
-                <BurgerIngredientsList ingredients={ingredients} heading="Булки" type="bun"/>
-                <BurgerIngredientsList ingredients={ingredients} heading="Соусы" type="sauce"/>
-                <BurgerIngredientsList ingredients={ingredients} heading="Начинки" type="main"/>
+                <BurgerIngredientsList ingredients={ingredients} heading="Булки" type="bun" refItem={refBun}/>
+                <BurgerIngredientsList ingredients={ingredients} heading="Соусы" type="sauce" refItem={refSauce}/>
+                <BurgerIngredientsList ingredients={ingredients} heading="Начинки" type="main" refItem={refMain}/>
             </section>
         </>
     );

@@ -1,3 +1,5 @@
+import { MutableRefObject } from "react";
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -29,6 +31,7 @@ export type TBurgerIngredientsListProps = {
   heading: string;
   ingredients: Array<TIngredient>;
   type: string;
+  refItem: MutableRefObject<HTMLDivElement | null>;
 }
 
 export type TOrderInfoOwner = {
@@ -48,4 +51,11 @@ export type TOrderInfo = {
   updatedAt: string;
   number: number;
   price: number;
+}
+
+export type TIngredientsTabsProps = {
+  currentTab: string;
+  refBun: MutableRefObject<HTMLDivElement | null>;
+  refSauce: MutableRefObject<HTMLDivElement | null>;
+  refMain: MutableRefObject<HTMLDivElement | null>;
 }

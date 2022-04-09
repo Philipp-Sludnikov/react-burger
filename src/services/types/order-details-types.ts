@@ -1,4 +1,4 @@
 export type TOrderDetailsProps = {
   error: boolean;
-  number: number;
+  number?: number;
 }

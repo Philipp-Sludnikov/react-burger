@@ -17,7 +17,7 @@ export const forgotPassword: AppThunk = (email: string) => {
     return (dispatch: AppDispatch) => {
         dispatch({ type: FORGOT_PASSWORD });
 
-        fetch(`${API_URL}/api/auth/password-reset`, {
+        fetch(`${API_URL}/api/password-reset`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -51,7 +51,7 @@ export const resetPassword: AppThunk = (password: string, token: string) => {
     return (dispatch: AppDispatch) => {
         dispatch({ type: RESET_PASSWORD });
 
-        fetch(`${API_URL}/api/auth/password-reset/reset`, {
+        fetch(`${API_URL}/api/password-reset/reset`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'

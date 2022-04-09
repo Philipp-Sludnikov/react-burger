@@ -2,9 +2,8 @@ import styles from './feed-page.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { wsConnectionStart, wsConnectionClose } from '../../services/actions/websocket';
-import { TFeedOrder, TFeedOrderProps, TOrderListProps, TOrderTotalsProps } from '../../services/types/feed-types';
+import { TFeedOrderProps, TOrderListProps, TOrderTotalsProps } from '../../services/types/feed-types';
 import { TIngredient } from '../../services/types/burger-ingredients-types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -12,7 +11,7 @@ import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
 import 'dayjs/locale/ru';
 import { WS_API_URL } from '../../utils/api';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -23,11 +22,11 @@ const FeedOrder: FC<TFeedOrderProps> = ({order}) => {
   const history = useHistory();
   const location = useLocation();
 
-  const ingredients: Array<TIngredient> = useSelector((store:RootState) => store.ingredients.ingredients);
+  const ingredients = useAppSelector(store => store.ingredients.ingredients);
 
   let orderIngredients: Array<TIngredient> = [];
 
-  const bunIngredient = ingredients.filter((ingredient: TIngredient) => (order.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
+  const bunIngredient = ingredients.filter(ingredient => (order.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
   if(bunIngredient) {
     orderIngredients.push(bunIngredient);
   }
@@ -40,7 +39,7 @@ const FeedOrder: FC<TFeedOrderProps> = ({order}) => {
   });
 
   const totalPrice:number = orderIngredients.reduce(
-    function(price: number, ingredient: TIngredient) {
+    function(price, ingredient) {
       if(ingredient.type === 'bun') {
         return price + ingredient.price * 2;
       } else {
@@ -72,7 +71,7 @@ const FeedOrder: FC<TFeedOrderProps> = ({order}) => {
     <p className={`text text_type_main-medium mb-6`}>{order.name}</p>
     <section className={styles.orderIngredientsWrapper}>
       <ul className={styles.orderIngredients}>
-        {orderIngredients.map((ingredient: TIngredient, index: number) => ( index < 5 &&
+        {orderIngredients.map((ingredient, index) => ( index < 5 &&
           <li className={styles.orderIngredient} key={index}><img src={ingredient.image_mobile} alt={ingredient.name} /></li>))
         }
         {orderIngredients.length > 5 && (
@@ -91,15 +90,15 @@ const OrderList: FC<TOrderListProps> = ({orders}) => {
   return (
     <section className={styles.orderListWrapper}>
       <ul className={styles.listOfOrders}>
-        {orders.map((order: TFeedOrder) => (<FeedOrder order={order} key={order._id}/>))}
+        {orders.map(order => (<FeedOrder order={order} key={order._id}/>))}
         
       </ul>
   </section>
   );
 }
 const OrderTotals: FC<TOrderTotalsProps> = ({orders}) => {
-  const total = useSelector((store: RootState) => store.websocketReducer.total);
-  const totalToday = useSelector((store: RootState) => store.websocketReducer.totalToday);
+  const total = useAppSelector(store => store.websocketReducer.total);
+  const totalToday = useAppSelector(store => store.websocketReducer.totalToday);
 
   return (<>
     <section className={`mb-6 ${styles.orderStatuses}`}>
@@ -134,8 +133,8 @@ const OrderTotals: FC<TOrderTotalsProps> = ({orders}) => {
 }
 
 const FeedPage: FC = () => {
-  const dispatch = useDispatch<AppDispatch | AppThunk>();
-  const feedOrders: Array<TFeedOrder> = useSelector((store: RootState) => store.websocketReducer.feedOrders);
+  const dispatch = useAppDispatch();
+  const feedOrders = useAppSelector(store => store.websocketReducer.feedOrders);
 
   useEffect(() => {
       dispatch(wsConnectionStart(`${WS_API_URL}/orders/all`));
@@ -160,3 +159,4 @@ const FeedPage: FC = () => {
 }
 
 export default FeedPage;
+

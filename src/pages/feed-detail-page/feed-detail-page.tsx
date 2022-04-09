@@ -2,8 +2,7 @@ import styles from './feed-detail-page.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { IngredientListProps, TFeedOrder } from '../../services/types/feed-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { IngredientListProps } from '../../services/types/feed-types';
 import { wsConnectionStart, wsConnectionClose } from '../../services/actions/websocket';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -11,8 +10,8 @@ import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
 import 'dayjs/locale/ru';
 import { TIngredient } from '../../services/types/burger-ingredients-types';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
 import { WS_API_URL } from '../../utils/api';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -20,7 +19,7 @@ dayjs.locale('ru');
 
 const IngredientList: FC<IngredientListProps> = ({ingredients}) => {
 
-  const ingrNotDuplicate: Array<TIngredient> = ingredients.filter((item, index) => ingredients.indexOf(item) === index);
+  const ingrNotDuplicate = ingredients.filter((item, index) => ingredients.indexOf(item) === index);
 
   const getCountIngredient = (ingredientID: string): number => {
     let count = 0;
@@ -54,8 +53,8 @@ const IngredientList: FC<IngredientListProps> = ({ingredients}) => {
 export const FeedDetails: FC = () => {
 
   const { id } = useParams<{id: string}>();
-  const feedOrders: Array<TFeedOrder> = useSelector((store: RootState) => store.websocketReducer.feedOrders);
-  const ingredients: Array<TIngredient> = useSelector((store:RootState) => store.ingredients.ingredients);
+  const feedOrders = useAppSelector(store => store.websocketReducer.feedOrders);
+  const ingredients = useAppSelector(store => store.ingredients.ingredients);
  
   const currentOrder = feedOrders.filter((order) => order._id === id)[0];
   
@@ -81,7 +80,7 @@ export const FeedDetails: FC = () => {
       calendarTime = dayjs(currentOrder.createdAt).fromNow();
     }
 
-    const bunIngredient = ingredients.filter((ingredient: TIngredient) => (currentOrder.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
+    const bunIngredient = ingredients.filter(ingredient => (currentOrder.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
     if(bunIngredient) {
       orderIngredients.push(bunIngredient);
     }
@@ -94,7 +93,7 @@ export const FeedDetails: FC = () => {
     });
 
     totalPrice = orderIngredients.reduce(
-      function(price: number, ingredient: TIngredient) {
+      function(price, ingredient) {
         if(ingredient.type === 'bun') {
           return price + ingredient.price * 2;
         } else {
@@ -119,7 +118,7 @@ export const FeedDetails: FC = () => {
 }
 
 const FeedDetailPage: FC = () => {
-  const dispatch = useDispatch<AppDispatch | AppThunk>();
+  const dispatch = useAppDispatch();
   
   useEffect(() => {
     dispatch(wsConnectionStart(`${WS_API_URL}/orders/all`));

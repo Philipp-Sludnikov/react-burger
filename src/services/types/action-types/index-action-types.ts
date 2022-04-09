@@ -36,12 +36,12 @@ export type TCalcConstructorTotalPrice = {
 
 export type TAddConstructorIngredient = {
   type: typeof ADD_CONSTRUCTOR_INGREDIENT;
-  item: TConstructorIngredient;
+  item: TIngredient;
 }
 
 export type TAddBunConstructorIngredient = {
   type: typeof ADD_BUN_CONSTRUCTOR_INGREDIENT;
-  bun: TConstructorIngredient;
+  bun: TIngredient;
 }
 
 export type TMoveConstructorIngredient = {
@@ -74,7 +74,9 @@ export type TSetViewedIngredient = {
 
 export type TShowModalOrder = {
   type: typeof SHOW_MODAL_ORDER;
-  ingredient: TIngredient
+  ingredient: {
+    number: number;
+  };
 }
 
 export type TCloseModalOrder = {

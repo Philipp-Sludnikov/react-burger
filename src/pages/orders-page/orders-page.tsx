@@ -1,7 +1,6 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router';
+import { Redirect, useHistory, useLocation } from 'react-router';
 import { wsConnectionClose, wsConnectionStart } from '../../services/actions/websocket';
 import { TFeedOrder, TProfileFeedOrdersProps } from '../../services/types/feed-types';
 import { getCookie } from '../../utils/cookie';
@@ -14,7 +13,7 @@ import isYesterday from 'dayjs/plugin/isYesterday';
 import 'dayjs/locale/ru';
 import { TIngredient } from '../../services/types/burger-ingredients-types';
 import { WS_API_URL } from '../../utils/api';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -24,7 +23,7 @@ dayjs.locale('ru');
 const ProfileFeedOrder: FC<TProfileFeedOrdersProps> = ({order}) => {
   const history = useHistory();
   const location = useLocation();
-  const ingredients: Array<TIngredient> = useSelector((store:RootState) => store.ingredients.ingredients);
+  const ingredients = useAppSelector(store => store.ingredients.ingredients);
   
   const openModal = (id: string) => {
     history.push(`/profile/orders/${id}`, {background: location});
@@ -54,7 +53,7 @@ const ProfileFeedOrder: FC<TProfileFeedOrdersProps> = ({order}) => {
 
   let orderIngredients: Array<TIngredient> = [];
 
-  const bunIngredient = ingredients.filter((ingredient: TIngredient) => (order.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
+  const bunIngredient = ingredients.filter((ingredient) => (order.ingredients.includes(ingredient._id) && ingredient.type === 'bun'))[0];
   if(bunIngredient) {
     orderIngredients.push(bunIngredient);
   }
@@ -67,7 +66,7 @@ const ProfileFeedOrder: FC<TProfileFeedOrdersProps> = ({order}) => {
   });
 
   const totalPrice:number = orderIngredients.reduce(
-    function(price: number, ingredient: TIngredient) {
+    function(price, ingredient) {
       if(ingredient.type === 'bun') {
         return price + ingredient.price * 2;
       } else {
@@ -84,7 +83,7 @@ const ProfileFeedOrder: FC<TProfileFeedOrdersProps> = ({order}) => {
     <p className={`text text_type_main-default mb-6`} style={statusStyle}>{status}</p>
     <section className={styles.orderIngredientsWrapper}>
       <ul className={styles.orderIngredients}>
-        {orderIngredients.map((ingredient: TIngredient, index: number) => ( index < 5 &&
+        {orderIngredients.map((ingredient, index) => ( index < 5 &&
           <li className={styles.orderIngredient} key={index}><img src={ingredient.image_mobile} alt={ingredient.name} /></li>))
         }
         {orderIngredients.length > 5 && (
@@ -100,13 +99,13 @@ const ProfileFeedOrder: FC<TProfileFeedOrdersProps> = ({order}) => {
 
 const ProfileFeedOrders: FC = () => {
   
-  const dispatch = useDispatch<AppDispatch | AppThunk>();
-  let token: string | undefined = getCookie('accessToken');
+  const dispatch = useAppDispatch();
+  let token = getCookie('accessToken');
   if(token?.indexOf('Bearer') !== -1) {
     token = token?.split(' ')[1];
   }
 
-  const feedOrders: Array<TFeedOrder> = useSelector((store: RootState) => store.websocketReducer.feedOrders.reverse());
+  const feedOrders = useAppSelector(store => store.websocketReducer.feedOrders.reverse());
 
   useEffect(() => {
       dispatch(wsConnectionStart(`${WS_API_URL}/orders?token=${token}`));
@@ -119,18 +118,26 @@ const ProfileFeedOrders: FC = () => {
 
   return(
     <ul className={styles.profileFeedWrapper}>
-      {feedOrders.map((order: TFeedOrder) => (<ProfileFeedOrder order={order} key={order._id}/>))}
+      {feedOrders.map((order) => (<ProfileFeedOrder order={order} key={order._id}/>))}
     </ul>
   );
 }
 
 const OrdersPage: FC = () => {
-  return (
-    <section className={styles.profileWrapper}>
-        <ProfileNavigation />
-        <ProfileFeedOrders />
-    </section>
-  );  
+  const isLogoutSuccess = useAppSelector(store => store.logout.logoutSuccess);
+    
+  if(isLogoutSuccess && getCookie('refreshToken') === undefined) {
+      return (
+          <Redirect to='/login' />
+      );  
+  } else {
+      return (
+          <section className={styles.profileWrapper}>
+              <ProfileNavigation />
+              <ProfileFeedOrders />
+          </section>
+      );  
+  }
 }
 
 export default OrdersPage;

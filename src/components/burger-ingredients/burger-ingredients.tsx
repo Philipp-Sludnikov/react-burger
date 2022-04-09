@@ -1,15 +1,15 @@
 import { useState, useMemo, FC, UIEvent } from 'react';
 import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { showModalIngredient } from '../../services/actions/index';
 import { useDrag } from "react-dnd";
 import { useHistory, useLocation } from 'react-router-dom';
-import { TIngredientItemProps, TIngredient, TBurgerIngredientsListProps, TIngredients } from '../../services/types/burger-ingredients-types';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
+import { TIngredientItemProps, TIngredient, TBurgerIngredientsListProps } from '../../services/types/burger-ingredients-types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
     const [current, setCurrent] = useState<string>(currentTab);
+
     return (
         <div className={'mb-10 ' + styles.ingredientTabs}>
             <Tab value="bun" active={currentTab === 'bun'} onClick={setCurrent}>Булки</Tab>
@@ -19,11 +19,11 @@ const IngredientsTabs: FC<{currentTab: string}> = ({currentTab}) => {
     )
 };
 
-const IngredientItem: FC<TIngredientItemProps> = ({ingredient}) => {
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
+    const IngredientItem: FC<TIngredientItemProps> = ({ingredient}) => {
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const location = useLocation();
-    const constructorItems: Array<TIngredient> = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
+    const constructorItems = useAppSelector(store => store.constructorIngredients.constructorIngredients);
     const countItem = useMemo(() => constructorItems.filter(element => ingredient._id === element._id).length, [constructorItems]);
     
 
@@ -38,7 +38,7 @@ const IngredientItem: FC<TIngredientItemProps> = ({ingredient}) => {
     });
 
     const canDragIngredient = (item: TIngredient) => {
-        const itemsCount: number = constructorItems.length;
+        const itemsCount = constructorItems.length;
         if(itemsCount === 0) {
             if(item.type === 'bun') {
                 return true;
@@ -46,7 +46,7 @@ const IngredientItem: FC<TIngredientItemProps> = ({ingredient}) => {
                 return false;
             }
         } else {
-            const bunIndex: number = constructorItems.findIndex(element => element.type === 'bun' && element._id === item._id);
+            const bunIndex = constructorItems.findIndex(element => element.type === 'bun' && element._id === item._id);
             if(bunIndex === -1) {
                 return true;
             } else {
@@ -87,7 +87,7 @@ const BurgerIngredientsList: FC<TBurgerIngredientsListProps> = (props) => {
 
 const BurgerIngredients: FC = () => {
 
-    const ingredients: Array<TIngredient> = useSelector((store: RootState) => store.ingredients.ingredients);
+    const ingredients = useAppSelector(store => store.ingredients.ingredients);
 
     const [currentTab, setCurrentTab] = useState<string>('bun');
 
@@ -96,7 +96,7 @@ const BurgerIngredients: FC = () => {
         const ingredientsWrapperPos = ingredientsWrapper.getBoundingClientRect().top;
         const elements = ingredientsWrapper.getElementsByTagName('h3');
         
-        const elementsArr: Array<HTMLElement> = Array.from(elements);
+        const elementsArr = Array.from(elements);
         let current_diff = Math.abs(elementsArr[0].getBoundingClientRect().top - ingredientsWrapperPos);
         let currentTabName = elementsArr[0].innerHTML;
 

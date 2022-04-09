@@ -9,7 +9,7 @@ export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = 'WS_CONNECTION_CLOSE
 
 export const wsConnectionStart: AppThunk = (wsUrl: string) => {
     return (dispatch: AppDispatch) => {
-        dispatch({type: WS_CONNECTION_START, payload: wsUrl});
+        dispatch({type: WS_CONNECTION_START, url: wsUrl});
     }
 }
 

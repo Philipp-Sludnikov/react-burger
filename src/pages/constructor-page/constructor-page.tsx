@@ -4,13 +4,12 @@ import BurgerConstructor from '../../components/burger-constructor/burger-constr
 import loadingGear from '../../images/Gear.gif';
 import Modal from '../../components/modal/modal';
 import OrderDetails from '../../components/order-details/order-details';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { FC } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { closeModalOrder } from '../../services/actions/index';
-import { TErrorProps, TIngredientsRequest, TOrderInfoRequest } from '../../services/types/pages-types';
-import { AppDispatch, AppThunk } from '../../services/types/types';
+import { TErrorProps } from '../../services/types/pages-types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
   const Loader: FC = () => {
     return (
@@ -30,11 +29,11 @@ import { AppDispatch, AppThunk } from '../../services/types/types';
 
   const ConstructorPage: FC = () => {
 
-  const { ingredientsRequest, ingredientsFailed, ingredientsError }: TIngredientsRequest = useSelector((store: RootStateOrAny) => store.ingredients);
-  const { visibleModalOrder, orderInfo, orderInfoFailed, orderInfoRequest }: TOrderInfoRequest = useSelector((store: RootStateOrAny) => store.modalOrder);
+  const { ingredientsRequest, ingredientsFailed, ingredientsError } = useAppSelector(store => store.ingredients);
+  const { visibleModalOrder, orderInfo, orderInfoFailed, orderInfoRequest } = useAppSelector(store => store.modalOrder);
 
 
-  const dispatch = useDispatch<AppDispatch | AppThunk>();
+  const dispatch = useAppDispatch();
 
   return (
     <div>

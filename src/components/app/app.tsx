@@ -1,7 +1,6 @@
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { ConstructorPage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, OrdersPage, FeedPage, IngredientPage, FeedDetailPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { useDispatch } from 'react-redux';
 import { useEffect, FC } from 'react';
 import Modal from '../modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
@@ -13,10 +12,10 @@ import { API_URL } from '../../utils/api';
 import { Location } from "history";
 
 import { closeModalIngredient } from '../../services/actions/index';
-import { AppDispatch, AppThunk } from '../../services/types/types';
+import { useAppDispatch } from '../../services/hooks';
 
 const App: FC = () => {
-  const dispatch = useDispatch<AppDispatch | AppThunk>();
+  const dispatch = useAppDispatch();
   const history = useHistory<Location>();
   const location = useLocation<{ background?: Location<{} | null | undefined> }>();
   const background = location.state && location.state.background;

@@ -2,13 +2,12 @@ import styles from './reset-password-page.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, FC, FormEvent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { resetPassword } from '../../services/actions/restore-password';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 
 const ResetPassword: FC = () => {
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
+    const dispatch = useAppDispatch();
     const [passwordValue, setPasswordValue] = useState<string>('');
     const [tokenValue, setTokenValue] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -50,8 +49,8 @@ const ResetPassword: FC = () => {
 }
 
 const ResetPasswordPage: FC = () => {
-    const restorePasswordStep: boolean = useSelector((store: RootState) => store.restorePassword.restorePasswordStep);
-    const isAuth: boolean = useSelector((store: RootState) => store.auth.isAuth);
+    const restorePasswordStep = useAppSelector(store => store.restorePassword.restorePasswordStep);
+    const isAuth = useAppSelector(store=> store.auth.isAuth);
     return (
         <>
             {(isAuth || !restorePasswordStep) ? (

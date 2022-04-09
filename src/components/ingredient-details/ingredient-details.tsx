@@ -1,17 +1,15 @@
 import styles from './ingredient-details.module.css';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setViewedIngredient } from '../../services/actions/index';
-import { TIngredient } from '../../services/types/burger-ingredients-types';
 import { TIngredientDetailsParams } from '../../services/types/ingredient-details-types';
 import { useEffect, FC } from 'react';
-import { AppDispatch, AppThunk, RootState } from '../../services/types/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const IngredientDetails: FC = () => {
     const params: TIngredientDetailsParams = useParams();
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
-    const currentViewedIngredient: TIngredient = useSelector((store: RootStateOrAny) => store.modalIngredient.currentViewedIngredient);
-    const ingredients: Array<TIngredient> = useSelector((store: RootState) => store.ingredients.ingredients);
+    const dispatch = useAppDispatch();
+    const currentViewedIngredient = useAppSelector(store => store.modalIngredient.currentViewedIngredient);
+    const ingredients = useAppSelector(store => store.ingredients.ingredients);
     
   
     useEffect( () => {
@@ -22,7 +20,7 @@ const IngredientDetails: FC = () => {
         
     }, [ingredients, currentViewedIngredient]);
 
-    return(
+      return(
         <section className={`mb-5 ${styles.viewedIngredient}`}>
           <img src={currentViewedIngredient.image_large} alt={currentViewedIngredient.name} className='mb-4' />
           <p className='text text_type_main-medium mb-8'>{currentViewedIngredient.name}</p>
@@ -46,6 +44,6 @@ const IngredientDetails: FC = () => {
           </section>
         </section>
       );
-}
+  }
 
 export default IngredientDetails;

@@ -32,4 +32,18 @@ export type TWSConnectionClosed = {
   type: typeof WS_CONNECTION_CLOSED;
 }
 
+export type TWsActions = {
+  wsStart: typeof WS_CONNECTION_START;
+  wsOnSuccess: typeof WS_CONNECTION_SUCCESS;
+  wsOnError: typeof WS_CONNECTION_ERROR;
+  wsClose: typeof WS_CONNECTION_CLOSE;
+  wsOnClosed: typeof WS_CONNECTION_CLOSED;
+  wsOnMessage: typeof WS_GET_FEED;
+};
+
+export type TMiddlewareAction = {
+  type: string;
+  url: string;
+}
+
 export type TWebsocketActions = TWSConnectionStart | TWSConnectionSuccess | TWSConnectionError | TWSGetFeed | TWSConnectionClose | TWSConnectionClosed;

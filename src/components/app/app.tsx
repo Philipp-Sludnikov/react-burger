@@ -37,7 +37,6 @@ const App: FC = () => {
     } else {
       history.push('/');
     }
-
   }
 
   return (<>

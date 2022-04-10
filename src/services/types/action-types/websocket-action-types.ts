@@ -1,4 +1,4 @@
-import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_GET_FEED, WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED } from '../../actions/websocket'; 
+import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_GET_MESSAGE, WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED } from '../../actions/websocket'; 
 import { TFeedOrder } from '../feed-types';
 
 export type TWebsocketPayload = {
@@ -19,8 +19,8 @@ export type TWSConnectionError = {
   type: typeof WS_CONNECTION_ERROR;
 }
 
-export type TWSGetFeed = {
-  type: typeof WS_GET_FEED;
+export type TWSGetMessage = {
+  type: typeof WS_GET_MESSAGE;
   payload: TWebsocketPayload;
 }
 
@@ -38,7 +38,7 @@ export type TWsActions = {
   wsOnError: typeof WS_CONNECTION_ERROR;
   wsClose: typeof WS_CONNECTION_CLOSE;
   wsOnClosed: typeof WS_CONNECTION_CLOSED;
-  wsOnMessage: typeof WS_GET_FEED;
+  wsOnMessage: typeof WS_GET_MESSAGE;
 };
 
 export type TMiddlewareAction = {
@@ -46,4 +46,4 @@ export type TMiddlewareAction = {
   url: string;
 }
 
-export type TWebsocketActions = TWSConnectionStart | TWSConnectionSuccess | TWSConnectionError | TWSGetFeed | TWSConnectionClose | TWSConnectionClosed;
+export type TWebsocketActions = TWSConnectionStart | TWSConnectionSuccess | TWSConnectionError | TWSGetMessage | TWSConnectionClose | TWSConnectionClosed;

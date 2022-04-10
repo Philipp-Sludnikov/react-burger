@@ -3,7 +3,7 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { socketMiddleware } from './middleware/socketMiddleware';
 import thunk from 'redux-thunk';
 import { TWsActions } from './types/action-types/websocket-action-types';
-import { WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_FEED } from './actions/websocket';
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE } from './actions/websocket';
 
 declare global {
   interface Window {
@@ -19,7 +19,7 @@ const wsActions:TWsActions = {
   wsOnError: WS_CONNECTION_ERROR,
   wsClose: WS_CONNECTION_CLOSE,
   wsOnClosed: WS_CONNECTION_CLOSED,
-  wsOnMessage: WS_GET_FEED
+  wsOnMessage: WS_GET_MESSAGE
 }
 
 const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsActions)));

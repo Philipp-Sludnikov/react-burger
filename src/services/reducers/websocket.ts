@@ -1,4 +1,4 @@
-import { WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_GET_FEED, WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED } from '../actions/websocket';
+import { WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_CONNECTION_CLOSED } from '../actions/websocket';
 import { TWebsocketActions } from '../types/action-types/websocket-action-types';
 import { TInitialState } from '../types/reducer-types/websocket-reducer-types';
 
@@ -17,7 +17,7 @@ export const websocketReducer = (state = initialState, action: TWebsocketActions
                 ...state,
                 isConnected: true
         }
-        case WS_GET_FEED: 
+        case WS_GET_MESSAGE: 
             return {
                 ...state,
                 feedOrders: action.payload.orders,

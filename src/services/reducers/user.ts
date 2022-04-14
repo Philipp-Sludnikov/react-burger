@@ -4,7 +4,7 @@ import { SET_USER, UNSET_USER,
 import { TUserActions } from '../types/action-types/user-action-types';
 import { TInitialState } from '../types/reducer-types/user-reducer-types';
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     name: '',
     email: '',
     getUserRequest: false, 

@@ -8,7 +8,7 @@ const OrderDetails: FC<TOrderDetailsProps> = (props) => {
       <section className={styles.orderDetailsWrapper}>
         {!props.error ? 
         <>
-        <p className={"text text_type_digits-large mt-8 mb-8 " + styles.orderNum}>{props.number}</p>
+        <p className={"text text_type_digits-large mt-8 mb-8 " + styles.orderNum} data-element="orderNumber">{props.number}</p>
         <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
         <p className="mb-15"><img src={DoneIcon} alt="Заказ подготовлен" /></p>
         <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>

@@ -22,7 +22,7 @@ const LoginForm: FC = () => {
         
         <section className={styles.loginFormWrapper}>
             <p className={`text text_type_main-medium mb-6 ${styles.signInTitle}`}>Вход</p>
-            <form className={`${styles.loginForm} mb-20`} onSubmit={loginHandler}>
+            <form className={`${styles.loginForm} mb-20`} onSubmit={loginHandler} data-element="loginForm">
                 <Input
                     type={'email'}
                     placeholder={'E-Mail'}

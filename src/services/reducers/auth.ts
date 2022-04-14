@@ -3,7 +3,7 @@ import { TAuthActions } from '../types/action-types/auth-action-types';
 import { TInitialState } from '../types/reducer-types/auth-reducer-types';
 
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     isAuth: false,
 };
 

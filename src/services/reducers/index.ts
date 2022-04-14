@@ -16,7 +16,7 @@ import {
 import { TConstructorIngredientsState, TIngredientsState, TModalIngredientState, TModalOrderState } from '../types/reducer-types/index-reducer-types';
 import { TIndexActions } from '../types/action-types/index-action-types';
 
-const ingredientsState: TIngredientsState = {
+export const ingredientsState: TIngredientsState = {
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientsError: '',
@@ -24,24 +24,24 @@ const ingredientsState: TIngredientsState = {
     
 }
 
-const constructorIngredientsState: TConstructorIngredientsState = {
+export const constructorIngredientsState: TConstructorIngredientsState = {
     constructorIngredients: [],
     totalPrice: 0
 }
 
-const modalIngredientState: TModalIngredientState = {
+export const modalIngredientState: TModalIngredientState = {
     visibleModalIngredient: false,
     currentViewedIngredient: {}
 }
 
-const modalOrderState: TModalOrderState = {
+export const modalOrderState: TModalOrderState = {
     orderInfoRequest: false,
     orderInfoFailed: false,
     visibleModalOrder: false,
     orderInfo: {}
 }
 
-const ingredientsList = (state = ingredientsState, action: TIndexActions): TIngredientsState => {
+export const ingredientsList = (state = ingredientsState, action: TIndexActions): TIngredientsState => {
     switch (action.type) {
         case GET_INGREDIENTS : {
             return {
@@ -70,7 +70,7 @@ const ingredientsList = (state = ingredientsState, action: TIndexActions): TIngr
     }
 }
 
-const constructorIngredientsList = (state = constructorIngredientsState, action: TIndexActions): TConstructorIngredientsState => {
+export const constructorIngredientsList = (state = constructorIngredientsState, action: TIndexActions): TConstructorIngredientsState => {
     switch (action.type) {
         case CALC_CONSTRUCTOR_TOTAL_PRICE: {
             return {
@@ -80,33 +80,37 @@ const constructorIngredientsList = (state = constructorIngredientsState, action:
                 }, 0)
             }
         }
+
+        case ADD_BUN_CONSTRUCTOR_INGREDIENT: {
+            const bunIndex = state.constructorIngredients.findIndex(element => element.type === 'bun');
+            if(bunIndex === -1) {
+                return {
+                    ...state,
+                    constructorIngredients: [...state.constructorIngredients, {...action.bun, id: action.id}]
+                }
+            } else {
+                return {
+                    ...state,
+                    constructorIngredients: [...state.constructorIngredients.filter(elem => elem.type !== 'bun'), {...action.bun, id: action.id}]
+                }
+            }
+
+        }
+
+        case ADD_CONSTRUCTOR_INGREDIENT: {
+            return {
+                ...state,
+                constructorIngredients: [...state.constructorIngredients, {...action.item, id: action.id}]
+            }
+        }
+
         case REMOVE_CONSTRUCTOR_ITEM: {
             return {
                 ...state,
                 constructorIngredients: state.constructorIngredients.filter(item => item.id !== action.id)
             }
         }
-        case ADD_CONSTRUCTOR_INGREDIENT: {
-            return {
-                ...state,
-                constructorIngredients: [...state.constructorIngredients, {...action.item, id: Math.random().toString(16).slice(2)}]
-            }
-        }
-        case ADD_BUN_CONSTRUCTOR_INGREDIENT: {
-            const bunIndex = state.constructorIngredients.findIndex(element => element.type === 'bun');
-            if(bunIndex === -1) {
-                return {
-                    ...state,
-                    constructorIngredients: [...state.constructorIngredients, {...action.bun, id: Math.random().toString(16).slice(2)}]
-                }
-            } else {
-                return {
-                    ...state,
-                    constructorIngredients: [...state.constructorIngredients.filter(elem => elem.type !== 'bun'), {...action.bun, id: Math.random().toString(16).slice(2)}]
-                }
-            }
 
-        }
         case MOVE_CONSTRUCTOR_INGREDIENT: {
             const item = state.constructorIngredients.filter((element) => `${element.id}` === action.id)[0];
             const index = state.constructorIngredients.indexOf(item);
@@ -129,7 +133,7 @@ const constructorIngredientsList = (state = constructorIngredientsState, action:
     }
 }
 
-const modalIngredient = (state = modalIngredientState, action: TIndexActions): TModalIngredientState => {
+export const modalIngredient = (state = modalIngredientState, action: TIndexActions): TModalIngredientState => {
     switch (action.type) {
         case SHOW_MODAL_INGREDIENT: {
             return {
@@ -156,7 +160,7 @@ const modalIngredient = (state = modalIngredientState, action: TIndexActions): T
     }
 }
 
-const modalOrder = (state = modalOrderState, action: TIndexActions): TModalOrderState => {
+export const modalOrder = (state = modalOrderState, action: TIndexActions): TModalOrderState => {
     switch (action.type) {
         case GET_ORDER_INFO: {
             return {

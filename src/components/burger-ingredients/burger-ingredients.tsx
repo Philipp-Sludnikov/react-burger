@@ -67,7 +67,7 @@ const IngredientsTabs: FC<TIngredientsTabsProps> = ({currentTab, refBun, refSauc
     }
 
     return (
-        <li className={`mb-8 pl-4 pr-4 ${styles.ingredientListItem} ${isIngredeintDrag && styles.dragIngredientListItem} ${!canDrag && styles.ingredientListItemNotCanDrag}`} onClick={() => openModal(ingredient)} ref={dragIngredientRef}>
+        <li className={`mb-8 pl-4 pr-4 ${styles.ingredientListItem} ${isIngredeintDrag && styles.dragIngredientListItem} ${!canDrag && styles.ingredientListItemNotCanDrag}`} onClick={() => openModal(ingredient)} ref={dragIngredientRef} data-id={ingredient._id}>
             {countItem !== 0 && <Counter count={countItem} size="default" />}
             <img src={ingredient.image} alt={ingredient.name} className={'mb-1 ' + styles.ingredientImage} />
             <section className={'text text_type_digits-default mb-1 ' + styles.ingredientItemPrice}><span className='mr-2'>{ingredient.price}</span> <CurrencyIcon type="primary" /></section>

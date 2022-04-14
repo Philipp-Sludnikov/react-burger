@@ -2,7 +2,7 @@ import { LOGOUT_USER, LOGOUT_USER_FAILED , LOGOUT_USER_SUCCESS, UNSET_LOGOUT, SE
 import { TLogoutActions } from '../types/action-types/logout-action-types';
 import { TInitialState } from '../types/reducer-types/logout-reducer-types';
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     logoutRequest: false, 
     logoutFailed: false,
     logoutError: '',

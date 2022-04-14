@@ -37,11 +37,13 @@ export type TCalcConstructorTotalPrice = {
 export type TAddConstructorIngredient = {
   type: typeof ADD_CONSTRUCTOR_INGREDIENT;
   item: TIngredient;
+  id: string;
 }
 
 export type TAddBunConstructorIngredient = {
   type: typeof ADD_BUN_CONSTRUCTOR_INGREDIENT;
   bun: TIngredient;
+  id: string;
 }
 
 export type TMoveConstructorIngredient = {

@@ -22,24 +22,24 @@ const IngredientDetails: FC = () => {
 
       return(
         <section className={`mb-5 ${styles.viewedIngredient}`}>
-          <img src={currentViewedIngredient.image_large} alt={currentViewedIngredient.name} className='mb-4' />
-          <p className='text text_type_main-medium mb-8'>{currentViewedIngredient.name}</p>
+          <img src={currentViewedIngredient.image_large} alt={currentViewedIngredient.name} className='mb-4' data-element="modalIngrImage"/>
+          <p className='text text_type_main-medium mb-8' data-element="modalIngrName">{currentViewedIngredient.name}</p>
           <section className={styles.composition}>
             <span>
               <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Калории,ккал</p>
-              <p className='text text_type_digits-default text_color_inactive'>{currentViewedIngredient.calories}</p>
+              <p className='text text_type_digits-default text_color_inactive' data-element="modalIngrCalories">{currentViewedIngredient.calories}</p>
             </span>
             <span>
               <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Белки, г</p>
-              <p className='text text_type_digits-default text_color_inactive'>{currentViewedIngredient.proteins}</p>
+              <p className='text text_type_digits-default text_color_inactive' data-element="modalIngrProteins">{currentViewedIngredient.proteins}</p>
             </span>
             <span>
               <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Жиры, г</p>
-              <p className={'text text_type_digits-default text_color_inactive ' + styles.compositionItemValue}>{currentViewedIngredient.fat}</p>
+              <p className={'text text_type_digits-default text_color_inactive ' + styles.compositionItemValue} data-element="modalIngrFat">{currentViewedIngredient.fat}</p>
             </span>
             <span>
               <p className={'text text_type_main-default text_color_inactive ' + styles.compositionItemName}>Углеводы, г</p>
-              <p className='text text_type_digits-default text_color_inactive'>{currentViewedIngredient.carbohydrates}</p>
+              <p className='text text_type_digits-default text_color_inactive' data-element="modalIngrCarbo">{currentViewedIngredient.carbohydrates}</p>
             </span>
           </section>
         </section>

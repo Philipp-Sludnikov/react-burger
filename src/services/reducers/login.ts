@@ -2,7 +2,7 @@ import { LOGIN_USER, LOGIN_USER_FAILED , LOGIN_USER_SUCCESS } from '../actions/l
 import { TLoginActions } from '../types/action-types/login-action-types';
 import { TInitialState } from '../types/reducer-types/login-reducer-types';
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     loginSuccess: false,
     loginRequest: false, 
     loginFailed: false,

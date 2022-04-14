@@ -43,6 +43,7 @@ const App: FC = () => {
       <AppHeader />
       <Switch location={background || location}>
         <Route path="/" exact component={ConstructorPage} />
+        <Route path="/react-burger" exact component={ConstructorPage} />
         <Route path="/feed" exact component={FeedPage} />
         <Route path="/feed/:id" exact component={FeedDetailPage} />
         <Route path="/login" exact component={LoginPage} />

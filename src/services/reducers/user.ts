@@ -1,8 +1,10 @@
 import { SET_USER, UNSET_USER, 
     GET_USER, GET_USER_FAILED, GET_USER_SUCCESS,
     UPDATE_USER, UPDATE_USER_FAILED, UPDATE_USER_SUCCESS } from '../actions/user';
+import { TUserActions } from '../types/action-types/user-action-types';
+import { TInitialState } from '../types/reducer-types/user-reducer-types';
 
-const initialState = {
+const initialState: TInitialState = {
     name: '',
     email: '',
     getUserRequest: false, 
@@ -13,7 +15,7 @@ const initialState = {
     updateUserError: '',
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions): TInitialState => {
     switch (action.type) {
         case SET_USER: {
             return {

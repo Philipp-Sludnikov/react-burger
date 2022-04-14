@@ -1,0 +1,105 @@
+.feedDetailWrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+    height: calc(100vh - 88px);
+}
+
+.detailOrderInfo
+{
+    width: 640px;
+}
+
+.orderNumber
+{
+    text-align: center;
+}
+
+.orderStatus
+{
+    color: rgba(0, 204, 204, 1);
+}
+
+.ingredientList
+{
+    margin-left: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ingredientListItem
+{
+    display: flex;
+    align-items: center;
+}
+
+.ingredientListTitle
+{
+    max-width: 320px;
+    width: 100%;
+}
+
+.ingredientListImage
+{
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    box-shadow: inset 0px 0px 0px 100vw #131316;
+}
+
+.ingredientListImage img
+{
+    width: 150%;
+}
+
+.ingredientListPrice
+{
+    display: flex;
+    justify-content: space-between;
+    column-gap: 10px;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.ingredientList
+{
+    overflow-y: scroll;
+    height: 320px;
+    padding-right: 24px;
+}
+
+.ingredientList::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #2F2F37;
+}
+
+.ingredientList::-webkit-scrollbar-thumb
+{
+    background-color: #8585AD;
+}
+
+.feedDetailTimePrice
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.feedDetailTotalPrice
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+}

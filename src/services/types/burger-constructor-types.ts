@@ -1,3 +1,5 @@
+import { TIngredient } from "./burger-ingredients-types";
+
 export type TConstructorIngredient = {
   id: string;
   type: string;
@@ -8,13 +10,13 @@ export type TConstructorIngredient = {
 
 export type TConstructorItem = {
   locked?: boolean;
-  constructorItem: TConstructorIngredient;
+  constructorItem: TIngredient;
   index?: number;
   id: string;
 }
 
 export type TConstructorItemElement = {
-  constructorItem: TConstructorIngredient;
+  constructorItem: TIngredient;
   isLocked?: boolean;
   type?: "top" | "bottom";
   onClick?: any;

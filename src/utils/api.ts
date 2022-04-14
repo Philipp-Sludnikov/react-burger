@@ -1,8 +1,10 @@
+import { TGetUserRequestData, TCheckResponseData } from '../services/types/api-types';
 import { getCookie, setCookie } from './cookie';
 
 export const API_URL: string = 'https://norma.nomoreparties.space';
+export const WS_API_URL: string = 'wss://norma.nomoreparties.space';
 
-export const checkResponse = (res: Response): Promise<string> => {
+export const checkResponse = (res: Response): TCheckResponseData | Promise<TCheckResponseData> => {
     if (res.ok) {
       return res.json();
     }
@@ -10,7 +12,7 @@ export const checkResponse = (res: Response): Promise<string> => {
     return Promise.reject(`Ошибка ${res.status}`);
 }
 
-export const getUserRequest = async (): Promise<unknown> => {
+export const getUserRequest = async (): Promise<any> => {
 
   const accessToken = getCookie('accessToken');
 
@@ -23,7 +25,7 @@ export const getUserRequest = async (): Promise<unknown> => {
       },
     });
 
-    const data = await request.json();
+    const data: TGetUserRequestData = await request.json();
     if (request.ok) {
         return data;
     }
@@ -35,7 +37,7 @@ export const getUserRequest = async (): Promise<unknown> => {
   }
 }
 
-export const updateUserRequest = async (user: string): Promise<unknown> => {
+export const updateUserRequest = async (user: object): Promise<any> => {
       const token = getCookie('accessToken');
 
       const request = await fetch(`${API_URL}/api/auth/user`, {
@@ -50,7 +52,7 @@ export const updateUserRequest = async (user: string): Promise<unknown> => {
           body: JSON.stringify(user)
       });
 
-      const data = await request.json();
+      const data: TGetUserRequestData = await request.json();
       if (request.ok) {
         return data;
       }

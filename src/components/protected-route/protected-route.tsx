@@ -3,7 +3,7 @@ import { getCookie } from '../../utils/cookie';
 import { FC } from 'react';
 
 export const ProtectedRoute: FC<RouteProps> = ({children,...rest}) => {
-    const token: string | undefined = getCookie('refreshToken');
+    const token = getCookie('refreshToken');
     return(
     <Route
       {...rest}

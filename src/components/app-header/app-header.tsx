@@ -20,7 +20,7 @@ const MobileHeader = () => {
     return(
         <header className={styles.mobileHeader + ' ' + (opened === true && styles.mobileHeaderFixed)}>
             {(opened === false) ? 
-            (<><img src={mobilelogo} alt="Burger Mobile Logo" /> <MenuIcon type="primary" onClick={() => setOpened(!opened)} /></>) : 
+            (<><a href="/"><img src={mobilelogo} alt="Burger Mobile Logo" /> <MenuIcon type="primary" onClick={() => setOpened(!opened)} /></a></>) : 
             (<>
                 <span className='text text_type_main-medium'>Меню</span> <CloseIcon type="primary" onClick={() => setOpened(!opened)} />
                 <ul className={styles.mobileNav}>
@@ -47,7 +47,7 @@ const AppHeader = () => {
                     </HeaderButton>
                 </section>
                 <section className={styles.logoContainer}>
-                    <Logo />
+                    <a href="/"><Logo /></a>   
                 </section>
                 <section className={styles.buttonsContainer + ' ' + styles.rightButtonsContainer}>
                     <HeaderButton classes='pt-4 pl-4 pb-4'>

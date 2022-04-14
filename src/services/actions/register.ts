@@ -1,23 +1,22 @@
-import { SET_USER } from '../actions/user';
-import { SET_AUTH } from '../actions/auth';
+import { SET_USER } from './user';
+import { SET_AUTH } from './auth';
 import { checkResponse } from '../../utils/api';
 import { setCookie } from '../../utils/cookie';
 import { API_URL } from '../../utils/api';
+import { AppDispatch, AppThunk } from '../types/types';
 
-export const REGISTER_USER = 'REGISTER_USER';
-export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER: 'REGISTER_USER' = 'REGISTER_USER';
+export const REGISTER_USER_FAILED: 'REGISTER_USER_FAILED' = 'REGISTER_USER_FAILED';
+export const REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
 
-export const registerUser = (email, password, name) => {
+export const registerUser: AppThunk = (email: string, password: string, name: string) => {
     const user = {
         email: email,
         password: password,
         name: name
     };
-    return (dispatch) => {
-        dispatch({
-        type: REGISTER_USER
-        });
+    return (dispatch: AppDispatch) => {
+        dispatch({ type: REGISTER_USER });
 
         fetch(`${API_URL}/api/auth/register`, {
             method: 'POST',
@@ -49,7 +48,7 @@ export const registerUser = (email, password, name) => {
                 });
             }
         })
-        .catch(e => {
+        .catch((e: Error) => {
             dispatch({
                 type: REGISTER_USER_FAILED,
                 error: e.message

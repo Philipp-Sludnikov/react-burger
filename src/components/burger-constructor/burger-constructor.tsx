@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState, FC } from 'react';
-import PropTypes from 'prop-types';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { getOrderData, calcTotalPrice, addConstructorIngredient, moveConstructorIngredient, removeConstructorIngredient } from '../../services/actions/index';
 import { useDrag, useDrop, ConnectDropTarget } from "react-dnd";
 import { TConstructorItem, TConstructorIngredient, TConstructorItemElement } from '../../services/types/burger-constructor-types';
@@ -10,6 +8,8 @@ import { getCookie } from '../../utils/cookie';
 import { API_URL } from '../../utils/api';
 import { useHistory } from 'react-router-dom';
 import { motion } from "framer-motion";
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import { TIngredient } from '../../services/types/burger-ingredients-types';
 
 const EmptyConstructorElement: FC<{type: string}> = ({children, type}) => {
     return (
@@ -47,11 +47,11 @@ const ConstructorItem: FC<TConstructorItem> = (props) => {
       }
 
     const ref = useRef<HTMLInputElement>(null);
-    const dispatch = useDispatch();
-    const constructorItems: Array<TConstructorIngredient>  = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
+    const dispatch = useAppDispatch();
+    const constructorItems  = useAppSelector(store => store.constructorIngredients.constructorIngredients);
 
     const findConstructorItem = (id: string) => {
-          const item = constructorItems.filter((element: TConstructorIngredient) => `${element.id}` === id)[0];
+          const item = constructorItems.filter(element => `${element.id}` === id)[0];
           return {
             item,
             index: constructorItems.indexOf(item),
@@ -79,7 +79,7 @@ const ConstructorItem: FC<TConstructorItem> = (props) => {
     });
 
     const canDragIngredient = (props: TConstructorItem) => {
-        if(props.locked || constructorItems.filter((elem: TConstructorIngredient) => elem.type !== 'bun').length <= 1) {
+        if(props.locked || constructorItems.filter(elem => elem.type !== 'bun').length <= 1) {
             return false;
         } else {
             return true;
@@ -103,7 +103,7 @@ const ConstructorItemElement: FC<TConstructorItemElement> = (props) => {
         bunText = '(низ)';
     }
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const removeConstructorElement = (id: string) => {
         dispatch(removeConstructorIngredient(id));
@@ -125,14 +125,14 @@ const ConstructorItemElement: FC<TConstructorItemElement> = (props) => {
 }
 
 const BurgerConstructor: FC = () => { 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const history = useHistory();
     const [draggedItem, setDraggedItem] = useState<string>('');
 
     const orderAPI: string = `${API_URL}/api/orders`;
 
-    const constructorItems: Array<TConstructorIngredient> = useSelector((store: RootStateOrAny) => store.constructorIngredients.constructorIngredients);
-    const totalPrice = useSelector((store: RootStateOrAny) => store.constructorIngredients.totalPrice);
+    const constructorItems = useAppSelector(store => store.constructorIngredients.constructorIngredients);
+    const totalPrice = useAppSelector(store => store.constructorIngredients.totalPrice);
 
     const [{isHover}, dropTarget] = useDrop({
         accept: "ingredient",
@@ -159,7 +159,7 @@ const BurgerConstructor: FC = () => {
     const bunCount = constructorItems.filter(element => element.type === 'bun').length;
     const bunIndex = constructorItems.findIndex(element => element.type === 'bun');
 
-    const openModalOrder = (url: string, items: Array<TConstructorIngredient>) => {
+    const openModalOrder = (url: string, items: Array<TIngredient>) => {
         if(getCookie('refreshToken')) {
             dispatch(getOrderData(url, items));
         } else {

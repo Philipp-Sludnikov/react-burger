@@ -4,13 +4,13 @@ import { useState, useEffect, FC, MouseEvent, ChangeEvent, SyntheticEvent, FormE
 import { NavLink, Redirect } from 'react-router-dom';
 import { logoutUser } from '../../services/actions/logout';
 import { getUser, updateUser } from '../../services/actions/user';
-import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../../utils/cookie';
-import { TUser, TFormValues } from '../../services/types/pages-types';
+import { TFormValues } from '../../services/types/pages-types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 export const ProfileNavigation: FC = () => {
-    const dispatch = useDispatch();
-    const token: string | undefined = getCookie('refreshToken');
+    const dispatch = useAppDispatch();
+    const token = getCookie('refreshToken');
 
     const logoutHandler = (e: MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
@@ -30,13 +30,11 @@ export const ProfileNavigation: FC = () => {
 }
 
 const EditProfileForm: FC = () => {
-    const dispatch = useDispatch();
-    const user: TUser = useSelector((store: RootStateOrAny) => store.user);
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(store => store.user);
     const [formValues, setFormValues] = useState<TFormValues>({name: user.name, email: user.email, password: 'password'});
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [editElements, setEditElements] = useState<object>({});
-
-    
 
     useEffect(() => {
         if(getCookie('accessToken')) {
@@ -128,7 +126,7 @@ const EditProfileForm: FC = () => {
 
 
 const ProfilePage: FC = () => {
-    const isLogoutSuccess: boolean = useSelector((store: RootStateOrAny) => store.logout.logoutSuccess);
+    const isLogoutSuccess = useAppSelector(store => store.logout.logoutSuccess);
     
     if(isLogoutSuccess && getCookie('refreshToken') === undefined) {
         return (

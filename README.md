@@ -3,7 +3,7 @@
 Данное приложение разработано в рамках курса "React-разработчик" платформы Яндекс.Практикум.
 
 Приложение доступно по ссылкам:
-[Яндекс.Cloud](/)
+[Яндекс.Cloud](https://philipp.nomoredomains.work)
 [GitHub Pages](https://philipp-sludnikov.github.io/react-burger/)
 
 ## Функционал

@@ -33,7 +33,9 @@
     "eject": "react-scripts eject",
     "cypress:open": "./node_modules/.bin/cypress open",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+	"deploy-script": "npm run build && scp -r ./build/* feel2036@51.250.105.114:/home/feel2036/stellar-frontend" 
+
   },
   "eslintConfig": {
     "extends": [

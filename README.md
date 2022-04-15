@@ -39,5 +39,5 @@
 ### `npm run deploy`
 
 Деплой на Яндекс.Cloud
-### `npm run deploy`
+### `npm run deploy-script`
 

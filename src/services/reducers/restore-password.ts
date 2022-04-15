@@ -4,7 +4,7 @@ import { SET_RESTORE_PASS_STEP,  SET_RESET_PASS_STEP,
 import { TRestorePasswordActions } from '../types/action-types/restore-password-action-types';
 import { TInitialState } from '../types/reducer-types/restore-password-reducer-types';
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     restorePasswordStep: false,
     forgotPasswordRequest: false, 
     forgotPasswordFailed: false,

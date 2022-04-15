@@ -3,7 +3,7 @@ import { TWebsocketActions } from '../types/action-types/websocket-action-types'
 import { TInitialState } from '../types/reducer-types/websocket-reducer-types';
 
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     isConnected: false,
     feedOrders: [],
     total: 0,

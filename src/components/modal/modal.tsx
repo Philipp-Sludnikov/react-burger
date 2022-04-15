@@ -28,7 +28,7 @@ const Modal: FC<TModalProps> = ({header, children, modalClose}) => {
     return createPortal(
         <>
           <ModalOverlay modalClose={modalClose}>
-            <div className={'p-10 ' + styles.modalWindow} onClick={modalClick}>
+            <div className={'p-10 ' + styles.modalWindow} onClick={modalClick} data-element="modal">
                 <header className={styles.modalHeader}>
                     <span className="text text_type_main-large">{header}</span>
                     <CloseIcon type="primary" onClick={() => modalClose()}/>

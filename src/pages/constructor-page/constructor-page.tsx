@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
   const Loader: FC = () => {
     return (
-        <div className={styles.loader}>
+        <div className={styles.loader} data-element="loader">
             <img src={loadingGear} alt="Загрузка..." />
         </div>
     )

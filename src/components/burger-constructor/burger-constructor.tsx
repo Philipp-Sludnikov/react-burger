@@ -21,7 +21,7 @@ const EmptyConstructorElement: FC<{type: string}> = ({children, type}) => {
 
 const EmptyConstructor: FC<{ isHover:boolean;dropRef: ConnectDropTarget; }> = ({dropRef, isHover}) => {
     return (
-        <section className={styles.emptyConstructorContainer} ref={dropRef}>
+        <section className={styles.emptyConstructorContainer} ref={dropRef} data-type="constructor">
             <section className={`${styles.emptyConstructorTop} ${isHover && styles.emptyConstructorHovered}`}></section>
             <EmptyConstructorElement type="bun">
                 <p className="text text_type_main-default text_color_inactive">Выберите булку</p>
@@ -34,7 +34,7 @@ const EmptyConstructor: FC<{ isHover:boolean;dropRef: ConnectDropTarget; }> = ({
 const ConstructorTotalPrice: FC<{totalPrice: number}> = ({totalPrice}) => {
     return(
             <section className={'mr-10 ' + styles.totalPrice}>
-                <span className='text text_type_digits-medium'>{totalPrice}</span> <CurrencyIcon type="primary" />
+                <span className='text text_type_digits-medium' data-element="totalPrice">{totalPrice}</span> <CurrencyIcon type="primary" />
             </section>
     );
 }
@@ -144,7 +144,8 @@ const BurgerConstructor: FC = () => {
     });
 
     const onDropHandler = (item: TConstructorIngredient) => {
-        dispatch(addConstructorIngredient(item));
+        const constructorIdItem = Math.random().toString(16).slice(2);
+        dispatch(addConstructorIngredient(item, constructorIdItem));
     }
 
     const setTypeDraggedItem = (item: TConstructorIngredient) => {
@@ -172,7 +173,7 @@ const BurgerConstructor: FC = () => {
     return(<>
         {bunCount !== 0 ? (
         <>
-            <section className={wrapperClassName} ref={dropTarget}>
+            <section className={wrapperClassName} ref={dropTarget} data-type="constructor">
                 <ConstructorItemElement constructorItem={constructorItems[bunIndex]} isLocked={true} type="top" />
                     <section className={styles.unlockedWrapper} >
                         {constructorItems.map((constructorItem, index) => 

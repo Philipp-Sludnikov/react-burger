@@ -107,16 +107,18 @@ export const calcTotalPrice = () => {
   }
 }
 
-export const addConstructorIngredient = (item: TConstructorIngredient) => {
+export const addConstructorIngredient = (item: TConstructorIngredient, id: string) => {
   if(item.type === 'bun') {
     return {
       type: ADD_BUN_CONSTRUCTOR_INGREDIENT,
-      bun: item
+      bun: item,
+      id: id
     }
   } else {
     return {
       type: ADD_CONSTRUCTOR_INGREDIENT,
-      item: item
+      item: item,
+      id: id
     }
   }
 }
